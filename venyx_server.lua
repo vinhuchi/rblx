@@ -1,6 +1,6 @@
 repeat wait()
 until getgenv().lib
-
+print("Passed")
 local Server = lib:addPage("Server")
 
 local Server = Server:addSection("Server")
