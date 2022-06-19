@@ -1,3 +1,4 @@
+print(getgenv().lib)
 if getgenv().lib then
     local ServerPage = lib:addPage("Server")
 
