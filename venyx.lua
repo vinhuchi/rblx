@@ -2369,5 +2369,4 @@ GameSection:addButton("FPS Boost",function()
     
     loadstring(game:HttpGet("https://raw.githubusercontent.com/vinhuchi/rblx/api/fpsboost.lua"))()
 end)
-end
 return lib
