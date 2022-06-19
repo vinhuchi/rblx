@@ -1,30 +1,11 @@
 repeat wait()
 until getgenv().lib
 
-local Setting = lib:addPage("Setting")
-
 local Server = lib:addPage("Server")
-
-local UISetting = Setting:addSection("UI Setting")
 
 local Server = Server:addSection("Server")
 
 local GameSection = Server:addSection("Game")
-
-UISetting:addKeybind("Hide UI", Enum.KeyCode.RightControl, function()
-   lib:toggle()
-end, function()
-
-end)
-
-for Setting, color in pairs(themes) do
-	UISetting:addColorPicker(Setting, color, function(color3)
-		lib:setTheme(Setting, color3)
-	end)
-end
-UISetting:addButton("Save Setting",function()
-   SaveSetting()
-end)
 
 Server:addSlider("Server Players",ServerPlayers,1,12,function(Value)
     ServerPlayers = Value
