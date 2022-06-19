@@ -3,7 +3,7 @@ if getgenv().lib then
 
     local Server = ServerPage:addSection("Server")
 
-    local GameSection = Server:addSection("Game")
+    local GameSection = ServerPage:addSection("Game")
 
     Server:addSlider("Server Players",ServerPlayers,1,12,function(Value)
         ServerPlayers = Value
