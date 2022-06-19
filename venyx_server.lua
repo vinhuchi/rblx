@@ -1,7 +1,7 @@
 if getgenv().lib then
-    local Server = lib:addPage("Server")
+    local ServerPage = lib:addPage("Server")
 
-    local Server = Server:addSection("Server")
+    local Server = ServerPage:addSection("Server")
 
     local GameSection = Server:addSection("Game")
 
