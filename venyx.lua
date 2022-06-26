@@ -2760,5 +2760,5 @@ function section:updateMultiDropdown(dropdown, title, list, callback)
       frame.ScrollBarImageTransparency = 1
    end
 end
-
+end
 return library
