@@ -1,7 +1,7 @@
 -- init
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
-
+local getasset = getsynasset or getcustomasset
 -- services
 local input = game:GetService("UserInputService")
 local run = game:GetService("RunService")
@@ -9,8 +9,10 @@ local tween = game:GetService("TweenService")
 local tweeninfo = TweenInfo.new
 
 -- additional
+local Version = "In-Dev"
+local Mobile
 local utility = {}
-
+local data = {}
 -- themes
 local objects = {}
 themes = {
@@ -21,10 +23,181 @@ LightContrast = Color3.fromRGB(20, 20, 20),
 DarkContrast = Color3.fromRGB(0.05,0.05,0.05),  
 TextColor = Color3.fromRGB(255, 255, 255)
 }
+local Icon1 = {
+   ["Name"] = "IconAzure.png",
+   ["Url"] = "https://i.vgy.me/35A5LI.png",
+}
+local Icon2 = {
+   ["Name"] = "IconAzure2.png",
+   ["Url"] = "https://i.vgy.me/TZlYK8.png",
+}
+local Types = {
+	"RoundFrame",
+	"Shadow",
+	"Circle",
+	"CircleButton",
+	"Frame",
+	"Label",
+	"Button",
+	"SmoothButton",
+	"Box",
+	"ScrollingFrame",
+	"Menu",
+	"NavBar",
+	"dauX"
+}
 
+local ActualTypes = {
+	RoundFrame = "ImageLabel",
+	Shadow = "ImageLabel",
+	Circle = "ImageLabel",
+	CircleButton = "ImageButton",
+	Frame = "Frame",
+	Label = "TextLabel",
+	Button = "TextButton",
+	SmoothButton = "ImageButton",
+	Box = "TextBox",
+	ScrollingFrame = "ScrollingFrame",
+	Menu = "ImageButton",
+	NavBar = "ImageButton",
+	dauX = "ImageButton"
+}
+local Properties = {
+	dauX = {
+		AutoButtonColor = false,
+		BackgroundTransparency = 1,
+		Image = "http://www.roblox.com/asset/?id=3926305904",
+		ScaleType = Enum.ScaleType.Slice,
+		SliceCenter = Rect.new(3,3,924,724)
+	},
+	RoundFrame = {
+		BackgroundTransparency = 1,
+		Image = "http://www.roblox.com/asset/?id=5554237731",
+		ScaleType = Enum.ScaleType.Slice,
+		SliceCenter = Rect.new(3,3,297,297)
+	},
+	SmoothButton = {
+		AutoButtonColor = false,
+		BackgroundTransparency = 1,
+		Image = "http://www.roblox.com/asset/?id=5554237731",
+		ScaleType = Enum.ScaleType.Slice,
+		SliceCenter = Rect.new(3,3,297,297)
+	},
+	Shadow = {
+		Name = "Shadow",
+		BackgroundTransparency = 1,
+		Image = "http://www.roblox.com/asset/?id=5554236805",
+		ScaleType = Enum.ScaleType.Slice,
+		SliceCenter = Rect.new(23,23,277,277),
+		Size = UDim2.fromScale(1,1) + UDim2.fromOffset(30,30),
+		Position = UDim2.fromOffset(-15,-15)
+	},
+	Circle = {
+		BackgroundTransparency = 1,
+		Image = "http://www.roblox.com/asset/?id=5554831670"
+	},
+	CircleButton = {
+		BackgroundTransparency = 1,
+		AutoButtonColor = false,
+		Image = "http://www.roblox.com/asset/?id=5554831670"
+	},
+	Frame = {
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Size = UDim2.fromScale(1,1)
+	},
+	Label = {
+		BackgroundTransparency = 1,
+		Position = UDim2.fromOffset(5,0),
+		Size = UDim2.fromScale(1,1) - UDim2.fromOffset(5,0),
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left
+	},
+	Button = {
+		BackgroundTransparency = 1,
+		Position = UDim2.fromOffset(5,0),
+		Size = UDim2.fromScale(1,1) - UDim2.fromOffset(5,0),
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left
+	},
+	Box = {
+		BackgroundTransparency = 1,
+		Position = UDim2.fromOffset(5,0),
+		Size = UDim2.fromScale(1,1) - UDim2.fromOffset(5,0),
+		TextSize = 14,
+		TextXAlignment = Enum.TextXAlignment.Left
+	},
+	ScrollingFrame = {
+		BackgroundTransparency = 1,
+		ScrollBarThickness = 0,
+		CanvasSize = UDim2.fromScale(0,0),
+		Size = UDim2.fromScale(1,1)
+	},
+	Menu = {
+		Name = "More",
+		AutoButtonColor = false,
+		BackgroundTransparency = 1,
+		Image = "http://www.roblox.com/asset/?id=5555108481",
+		Size = UDim2.fromOffset(20,20),
+		Position = UDim2.fromScale(1,0.5) - UDim2.fromOffset(25,10)
+	},
+	NavBar = {
+		Name = "SheetToggle",
+		Image = "http://www.roblox.com/asset/?id=5576439039",
+		BackgroundTransparency = 1,
+		Size = UDim2.fromOffset(20,20),
+		Position = UDim2.fromOffset(5,5),
+		AutoButtonColor = false
+	}
+}
+function FindType(String)
+   for _, Type in next, Types do
+      if Type:sub(1, #String):lower() == String:lower() then
+         return Type
+      end
+   end
+   return false
+end
+function setV(v)
+   if v == nil then
+      return false
+   end
+   return v
+end
+function CanAsset(Data)
+   if isfile and isfile(Data) and getasset then
+      return getasset(Data)
+   end
+   return nil
+end
+if isfile and writefile and getasset then
+   if not isfile(Icon1["Name"]) then
+      local GetUrl = game:HttpGet(Icon1["Url"])
+      writefile(Icon1["Name"], GetUrl)
+   end
+   if not isfile(Icon2["Name"]) then
+      local GetUrl = game:HttpGet(Icon2["Url"])
+      writefile(Icon2["Name"], GetUrl)
+   end
+end
 do
+
+function utility.new(Type)
+   local TargetType = FindType(Type)
+   if TargetType then
+      local NewImage = Instance.new(ActualTypes[TargetType])
+      if Properties[TargetType] then
+         for Property, Value in next, Properties[TargetType] do
+            NewImage[Property] = Value
+         end
+      end
+      return NewImage
+   else
+      return Instance.new(Type)
+   end
+end
 function utility:Create(instance, properties, children)
-   local object = Instance.new(instance)
+   local object = utility.new(instance)
 
    for i, v in pairs(properties or {}) do
       object[i] = v
@@ -178,7 +351,7 @@ function utility:DraggingEnabled(frame, parent)
    end)
 
    frame.InputChanged:Connect(function(input)
-      if input.UserInputType == Enum.UserInputType.MouseMovement then
+      if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
          dragInput = input
       end
    end)
@@ -211,10 +384,16 @@ section.__index = section
 
 -- new classes
 
-function library.new(title)
+function library.new(istext)
+   local title = istext and "<font color='rgb(0, 0, 255)'><b>W-Azure</b></font>"or CanAsset("Logo.png")
+   local Version = "<font size ='11' color='rgb(255,0,0)'>"..Version.."</font>"
+   if istext then
+      title = string.format("%s %s",title,Version) 
+   end
+   local image = CanAsset("IconAzure2.png")
    local container = utility:Create("ScreenGui", {
-      Name = title,
-      Parent = game.CoreGui
+      Name = "W-azure",
+      Parent = game.CoreGui,
    }, {
       utility:Create("ImageLabel", {
          Name = "Main",
@@ -275,11 +454,12 @@ function library.new(title)
             ScaleType = Enum.ScaleType.Slice,
             SliceCenter = Rect.new(4, 4, 296, 296)
          }, {
-            utility:Create("TextLabel", { -- title
+            istext and utility:Create("TextLabel", { -- title
             Name = "Title",
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundTransparency = 1,
-            Position = UDim2.new(0, 12, 0, 19),
+            
+            Position = UDim2.new(0, 16, 0, 16),
             Size = UDim2.new(1, -46, 0, 16),
             Font = Enum.Font.GothamBold,
             RichText = true,
@@ -289,6 +469,42 @@ function library.new(title)
             TextSize = 14,
             TextXAlignment = Enum.TextXAlignment.Left
             })
+            or utility:Create("ImageLabel", { -- title
+            Name = "Title",
+            AnchorPoint = Vector2.new(0, 0.5),
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0, 36, 0, 16),
+            Size = UDim2.new(0, 60, 0, 16),
+            ZIndex = 99,
+            Image = title,
+            ImageColor3 = themes.TextColor,
+            ImageTransparency = 0,
+            }), not istext and utility:Create("ImageLabel", {
+               Name = "image", 
+               AnchorPoint = Vector2.new(0, 0.5),
+               BackgroundTransparency = 1,
+               Position = UDim2.new(0, 12, 0, 16),
+               Size = UDim2.new(0, 20, 0, 20),
+               ZIndex = 99,
+               Image = image,
+               ImageColor3 = themes.TextColor,
+               ImageTransparency = 0,
+            }) or {}, not istext and utility:Create("TextLabel", {
+               Name = "Version",
+               AnchorPoint = Vector2.new(0, 0.5),
+               BackgroundTransparency = 1,
+            
+               Position = UDim2.new(0, 100, 0, 16),
+               Size = UDim2.new(0, 20, 0, 20),
+               Font = Enum.Font.GothamBold,
+               RichText = true,
+               ZIndex = 99,
+               Text = Version,
+               TextColor3 = themes.TextColor,
+               TextSize = 14,
+               TextXAlignment = Enum.TextXAlignment.Left
+
+            }) or {}
          })
       })
    })
@@ -325,6 +541,7 @@ function page.new(library, title, icon)
          ZIndex = 3,
          Font = Enum.Font.Gotham,
          Text = title,
+         RichText = true,
          TextColor3 = themes.TextColor,
          TextSize = 12,
          TextTransparency = 0.65,
@@ -398,6 +615,7 @@ function section.new(page, title)
             ZIndex = 2,
             Font = Enum.Font.GothamSemibold,
             Text = title,
+            RichText = true,
             TextColor3 = themes.TextColor,
             TextSize = 12,
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -433,7 +651,6 @@ function library:addPage(...)
 
    return page
 end
-
 function page:addSection(...)
    local section = section.new(self, ...)
 
@@ -497,7 +714,54 @@ function library:toggle()
 
    self.toggling = false
 end
-
+function library:addMobileSupport()
+   local IB = Instance.new("ImageButton")
+   IB.Name = "Main"
+   IB.Parent = self.container
+   IB.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+   IB.BorderSizePixel = 0
+   IB.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
+   IB.Size = UDim2.new(0.057916649, 0, 0.0845824406, 0)
+   IB.Image = "rbxassetid://10012436327"
+   IB.MouseButton1Click:Connect(function()
+      if self.toggling then
+         return
+      end
+   
+      self.toggling = true
+   
+      local container = self.container.Main
+      local topbar = container.TopBar
+   
+      if self.position then
+         utility:Tween(container, {
+            Size = UDim2.new(0, 511, 0, 428),
+            Position = self.position
+         }, 0.2)
+         wait(0.2)
+   
+         utility:Tween(topbar, {Size = UDim2.new(1, 0, 0, 38)}, 0.2)
+         wait(0.2)
+   
+         container.ClipsDescendants = false
+         self.position = nil
+      else
+         self.position = container.Position
+         container.ClipsDescendants = true
+   
+         utility:Tween(topbar, {Size = UDim2.new(1, 0, 1, 0)}, 0.2)
+         wait(0.2)
+   
+         utility:Tween(container, {
+            Size = UDim2.new(0, 511, 0, 0),
+            Position = self.position + UDim2.new(0, 0, 0, 428)
+         }, 0.2)
+         wait(0.2)
+      end
+   
+      self.toggling = false
+   end)
+end
 -- new modules
 
 function library:Notify(title, text, callback)
@@ -541,6 +805,7 @@ function library:Notify(title, text, callback)
       }),
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0, 8),
          Size = UDim2.new(1, -40, 0, 16),
@@ -552,6 +817,7 @@ function library:Notify(title, text, callback)
       }),
       utility:Create("TextLabel", {
          Name = "Text",
+         RichText = true,
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 1, -24),
          Size = UDim2.new(1, -40, 0, 16),
@@ -674,6 +940,7 @@ function section:addTextLabel(title)
    }, {
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          BackgroundTransparency = 1,
          Size = UDim2.new(1, 0, 1, 0),
          ZIndex = 3,
@@ -704,7 +971,9 @@ function section:addButton(title, callback)
       SliceCenter = Rect.new(2, 2, 298, 298)
    }, {
       utility:Create("TextLabel", {
+         
          Name = "Title",
+         RichText = true,
          BackgroundTransparency = 1,
          Size = UDim2.new(1, 0, 1, 0),
          ZIndex = 3,
@@ -765,6 +1034,7 @@ function section:addToggle(title, default, callback)
    },{
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          AnchorPoint = Vector2.new(0, 0.5),
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0.5, 1),
@@ -806,8 +1076,8 @@ function section:addToggle(title, default, callback)
    table.insert(self.modules, toggle)
    --self:Resize()
 
-   local active = default
-   local active = default
+   local active = setV(default)
+   
    self:updateToggle(toggle, nil, active)
 
    toggle.MouseButton1Click:Connect(function()
@@ -839,6 +1109,7 @@ function section:addTextbox(title, default, callback)
    }, {
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          AnchorPoint = Vector2.new(0, 0.5),
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0.5, 1),
@@ -947,6 +1218,7 @@ function section:addKeybind(title, default, callback, changedCallback)
    }, {
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          AnchorPoint = Vector2.new(0, 0.5),
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0.5, 1),
@@ -972,6 +1244,7 @@ function section:addKeybind(title, default, callback, changedCallback)
       }, {
          utility:Create("TextLabel", {
             Name = "Text",
+            RichText = true,
             BackgroundTransparency = 1,
             ClipsDescendants = true,
             Size = UDim2.new(1, 0, 1, 0),
@@ -1052,6 +1325,7 @@ function section:addColorPicker(title, default, callback)
    },{
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          AnchorPoint = Vector2.new(0, 0.5),
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0.5, 1),
@@ -1105,6 +1379,7 @@ function section:addColorPicker(title, default, callback)
       }),
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0, 8),
          Size = UDim2.new(1, -40, 0, 16),
@@ -1227,6 +1502,7 @@ function section:addColorPicker(title, default, callback)
             }, {
                utility:Create("TextLabel", {
                   Name = "Text",
+                  RichText = true,
                   BackgroundTransparency = 1,
                   Size = UDim2.new(0.400000006, 0, 1, 0),
                   ZIndex = 2,
@@ -1261,6 +1537,7 @@ function section:addColorPicker(title, default, callback)
             }, {
                utility:Create("TextLabel", {
                   Name = "Text",
+                  RichText = true,
                   BackgroundTransparency = 1,
                   ZIndex = 2,
                   Size = UDim2.new(0.400000006, 0, 1, 0),
@@ -1294,6 +1571,7 @@ function section:addColorPicker(title, default, callback)
             }, {
                utility:Create("TextLabel", {
                   Name = "Text",
+                  RichText = true,
                   BackgroundTransparency = 1,
                   Size = UDim2.new(0.400000006, 0, 1, 0),
                   ZIndex = 2,
@@ -1328,6 +1606,7 @@ function section:addColorPicker(title, default, callback)
          }, {
             utility:Create("TextLabel", {
                Name = "Text",
+               RichText = true,
                BackgroundTransparency = 1,
                Size = UDim2.new(1, 0, 1, 0),
                ZIndex = 3,
@@ -1577,6 +1856,7 @@ function section:addSlider(title, default, min, max, callback)
    }, {
       utility:Create("TextLabel", {
          Name = "Title",
+         RichText = true,
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0, 6),
          Size = UDim2.new(0.5, 0, 0, 16),
@@ -1603,6 +1883,7 @@ function section:addSlider(title, default, min, max, callback)
       }),
       utility:Create("TextLabel", {
          Name = "Slider",
+         RichText = true,
          BackgroundTransparency = 1,
          Position = UDim2.new(0, 10, 0, 28),
          Size = UDim2.new(1, -20, 0, 16),
@@ -1837,7 +2118,135 @@ function section:addDropdown(title, list, callback)
 
    return dropdown
 end
+function section:addMultiDropdown(title, list, callback)
+   local dropdown = utility:Create("Frame", {
+      Name = "Dropdown",
+      Parent = self.container,
+      BackgroundTransparency = 1,
+      Size = UDim2.new(1, 0, 0, 30),
+      ClipsDescendants = true
+   }, {
+      utility:Create("UIListLayout", {
+         SortOrder = Enum.SortOrder.LayoutOrder,
+         Padding = UDim.new(0, 4)
+      }),
+      utility:Create("ImageLabel", {
+         Name = "Search",
+         BackgroundTransparency = 1,
+         BorderSizePixel = 0,
+         Size = UDim2.new(1, 0, 0, 30),
+         ZIndex = 2,
+         Image = "rbxassetid://5028857472",
+         ImageColor3 = themes.DarkContrast,
+         ScaleType = Enum.ScaleType.Slice,
+         SliceCenter = Rect.new(2, 2, 298, 298)
+      }, {
+         utility:Create("TextBox", {
+            Name = "TextBox",
+            AnchorPoint = Vector2.new(0, 0.5),
+            BackgroundTransparency = 1,
+            TextTruncate = Enum.TextTruncate.AtEnd,
+            Position = UDim2.new(0, 10, 0.5, 1),
+            Size = UDim2.new(1, -42, 1, 0),
+            ZIndex = 3,
+            Font = Enum.Font.Gotham,
+            Text = title,
+            TextColor3 = themes.TextColor,
+            TextSize = 12,
+            TextTransparency = 0.10000000149012,
+            TextXAlignment = Enum.TextXAlignment.Left
+         }),
+         utility:Create("ImageButton", {
+            Name = "Button",
+            BackgroundTransparency = 1,
+            BorderSizePixel = 0,
+            Position = UDim2.new(1, -28, 0.5, -9),
+            Size = UDim2.new(0, 18, 0, 18),
+            ZIndex = 3,
+            Image = "rbxassetid://5012539403",
+            ImageColor3 = themes.TextColor,
+            SliceCenter = Rect.new(2, 2, 298, 298)
+         })
+      }),
+      utility:Create("ImageLabel", {
+         Name = "List",
+         BackgroundTransparency = 1,
+         BorderSizePixel = 0,
+         Size = UDim2.new(1, 0, 1, -34),
+         ZIndex = 2,
+         Image = "rbxassetid://5028857472",
+         ImageColor3 = themes.Background,
+         ScaleType = Enum.ScaleType.Slice,
+         SliceCenter = Rect.new(2, 2, 298, 298)
+      }, {
+         utility:Create("ScrollingFrame", {
+            Name = "Frame",
+            Active = true,
+            BackgroundTransparency = 1,
+            BorderSizePixel = 0,
+            Position = UDim2.new(0, 4, 0, 4),
+            Size = UDim2.new(1, -8, 1, -8),
+            CanvasPosition = Vector2.new(0, 28),
+            CanvasSize = UDim2.new(0, 0, 0, 120),
+            ZIndex = 2,
+            ScrollBarThickness = 3,
+            ScrollBarImageColor3 = themes.DarkContrast
+         }, {
+            utility:Create("UIListLayout", {
+               SortOrder = Enum.SortOrder.LayoutOrder,
+               Padding = UDim.new(0, 4)
+            })
+         })
+      })
+   })
+   table.insert(data,
+      {["Val"] = {
 
+      },
+      ["DD"] = dropdown}
+   )
+   table.insert(self.modules, dropdown)
+   --self:Resize()
+
+   local search = dropdown.Search
+   local focused
+   list = list or {}
+
+   search.Button.MouseButton1Click:Connect(function()
+      if search.Button.Rotation == 0 then
+         self:updateMultiDropdown(dropdown, nil, list, callback)
+      else
+         self:updateMultiDropdown(dropdown, nil, nil, callback)
+      end
+   end)
+
+   search.TextBox.Focused:Connect(function()
+      if search.Button.Rotation == 0 then
+         self:updateMultiDropdown(dropdown, nil, list, callback)
+      end
+
+      focused = true
+   end)
+
+   search.TextBox.FocusLost:Connect(function()
+      focused = false
+   end)
+
+   search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
+      if focused then
+         local list = utility:Sort(search.TextBox.Text, list)
+         list = #list ~= 0 and list 
+
+         self:updateMultiDropdown(dropdown, nil, list, callback)
+      end
+   end)
+
+   dropdown:GetPropertyChangedSignal("Size"):Connect(function()
+      self:Resize()
+   end)
+
+   return dropdown
+end
 -- class functions
 
 function library:SelectPage(page, toggle)
@@ -2157,6 +2566,7 @@ function section:updateDropdown(dropdown, title, list, callback)
       }, {
          utility:Create("TextLabel", {
             BackgroundTransparency = 1,
+            RichText = true,
             Position = UDim2.new(0, 10, 0, 0),
             Size = UDim2.new(1, -10, 1, 0),
             ZIndex = 3,
@@ -2202,171 +2612,219 @@ function section:updateDropdown(dropdown, title, list, callback)
       frame.ScrollBarImageTransparency = 1
    end
 end
-end
-local lib = library.new("<font color='rgb(0, 0, 255)'><b>Island v2</b></font><font size ='11' color='rgb(255,0,0)'> BETA</font>")
-local ServerPage = lib:addPage("Server")
 
-local Server = ServerPage:addSection("Server")
+function section:updateMultiDropdown(dropdown, title, list, callback)
+   dropdown = self:getModule(dropdown)
 
-local GameSection = ServerPage:addSection("Game")
+   if title then
+      dropdown.Search.TextBox.Text = title
+   end
 
-Server:addSlider("Server Players",ServerPlayers,1,12,function(Value)
-    ServerPlayers = Value
-end)
-Server:addButton("Server Hop With Selected Server Players",function()
-   LowestServer()
-   lib:Notify("Server Hop","Done Searching : No Server Found") 
-end)
-Server:addButton("Server Hop(Charwar)",function()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/vinhuchi/Island_Game/main/CharwarServerHop.lua"))()
-end)
-Server:addButton("Find Lowest Players Server(Amnesia)",function()
-   loadstring(game:HttpGet("hhttps://raw.githubusercontent.com/vinhuchi/Island_Game/main/AmnesiaServerHop.lua"))()
-end)
-Server:addButton("Copy Server Id",function()
-   setclipboard(game.JobId)
-end)
-Server:addTextbox("Join Server With Id ","Your Server Id Here",function(Value)
-   local JobId = tostring(Value)
-   game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, JobId, game.Players.LocalPlayer)
-end)
-Server:addButton("Rejoin",function()
-   game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
-end)
+   local entries = 0
 
-GameSection:addButton("Delete Ui",function()
-    local ui = game:GetService("CoreGui"):FindFirstChild("Island v2")
-    if ui then
-        ui:Destroy()
-    end
-end)
-GameSection:addButton("Copy Discord Server Link",function()
-   setclipboard("https://discord.gg/kXPhQgzKCJ")
-end)
-GameSection:addButton("Join Discord Server",function()
-    if req then
-        req({
-            Url = 'http://127.0.0.1:6463/rpc?v=1',
-            Method = 'POST',
-            Headers = {
-                ['Content-Type'] = 'application/json',
-                Origin = 'https://discord.com'
-            },
-            Body = http:JSONEncode({
-                cmd = 'INVITE_BROWSER',
-                nonce = http:GenerateGUID(false),
-                args = {code = 'kXPhQgzKCJ'}
+   utility:Pop(dropdown.Search, 10)
+
+   for i, button in pairs(dropdown.List.Frame:GetChildren()) do
+      if button:IsA("ImageButton") then
+         button:Destroy()
+      end
+   end
+   for ir, value in pairs(list or {}) do
+      local Selected;
+      local button = utility:Create("ImageButton", {
+         Name = "Toggle",
+         Parent = dropdown.List.Frame,
+         BackgroundTransparency = 1,
+         BorderSizePixel = 0,
+         Size = UDim2.new(1, 0, 0, 30),
+         ZIndex = 2,
+         Image = "rbxassetid://5028857472",
+         ImageColor3 = themes.DarkContrast,
+         ScaleType = Enum.ScaleType.Slice,
+         SliceCenter = Rect.new(2, 2, 298, 298)
+      },{
+         utility:Create("TextLabel", {
+            RichText = true,
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0, 10, 0, 0),
+            Size = UDim2.new(1, -10, 1, 0),
+            ZIndex = 3,
+            Font = Enum.Font.Gotham,
+            Text = value,
+            TextColor3 = themes.TextColor,
+            TextSize = 12,
+            TextXAlignment = "Left",
+            TextTransparency = 0.10000000149012
+         }),
+         utility:Create("ImageLabel", {
+            Name = "Button",
+            BackgroundTransparency = 1,
+            BorderSizePixel = 0,
+            Position = UDim2.new(1, -50, 0.5, -8),
+            Size = UDim2.new(0, 40, 0, 16),
+            ZIndex = 2,
+            Image = "rbxassetid://5028857472",
+            ImageColor3 = themes.LightContrast,
+            ScaleType = Enum.ScaleType.Slice,
+            SliceCenter = Rect.new(2, 2, 298, 298)
+         }, {
+            utility:Create("ImageLabel", {
+               Name = "Frame",
+               BackgroundTransparency = 1,
+               Position = UDim2.new(0, 2, 0.5, -6),
+               Size = UDim2.new(1, -22, 1, -4),
+               ZIndex = 2,
+               Image = "rbxassetid://5028857472",
+               ImageColor3 = themes.TextColor,
+               ScaleType = Enum.ScaleType.Slice,
+               SliceCenter = Rect.new(2, 2, 298, 298)
             })
-        })
-    end
-end)
-local RTXmode = {
-   "Autumn";
-   "Summer";
-   "Summer2";
-}
-GameSection:addDropdown("RTX mode",RTXmode,function(Value)
-   getgenv().mode = Value
-end)
+         })
+      })
+      
+      button.MouseButton1Click:Connect(function()
+         Selected = not Selected
+         local TableToSend
+         for i,v in pairs(data) do
+            if v["DD"] == dropdown then
+               TableToSend = v["Val"]
+               if Selected then
+                  
+                  if not v["Val"][ir] then
+                     v["Val"][ir] = value
+                  end
+               else
+                  print("Is False")
+                  if v["Val"][ir] then
+                     table.remove(v["Val"],ir)
+                  end
+               end
+            end
+         end
+         local position = {
+            In = UDim2.new(0, 2, 0.5, -6),
+            Out = UDim2.new(0, 20, 0.5, -6)
+         }
+      
+         local frame = button.Button.Frame
+         VP = Selected and "Out" or "In"
+      
+         utility:Tween(frame, {
+            Size = UDim2.new(1, -22, 1, -9),
+            Position = position[VP] + UDim2.new(0, 0, 0, 2.5)
+         }, 0.2)
+      
+         wait(0.1)
+         utility:Tween(frame, {
+            Size = UDim2.new(1, -22, 1, -4),
+            Position = position[VP]
+         }, 0.1)
+         local Name = ""
+         for i,v in pairs(TableToSend) do
+            if v then
+               Name = string.format("%s %s",Name,v)
+            end
+         end
+         if callback then
+            dropdown.Search.TextBox.Text = Name
+            callback(TableToSend, function(...)
+               
+               --self:updateMultiDropdown(dropdown, ...)
+            end)	
+         end
+         --self:updateMultiDropdown(dropdown, Name)
+         --for i,v in pairs(v["Val"]) do
+         --end
+      end)
 
-GameSection:addButton("RTX Graphic(Client)",function()
-    lib:Notify("RTX Graphic","Credit To Switchblades")
-    if getgenv().mode == "Summer2" then
-        local yep = game.Lighting
-        local yep2 = Instance.new("Sky")
-        local yep3 = Instance.new("BloomEffect")
-        local yep4 = Instance.new("BlurEffect")
+      entries = entries + 1
+   end
 
-        yep2.Parent = yep
-        yep2.MoonTextureId = "rbxasset://sky/moon.jpg"
-        yep2.SkyboxBk = "http://www.roblox.com/asset?id=153258865"
-        yep2.SkyboxDn = "http://www.roblox.com/asset?id=153259937"
-        yep2.SkyboxFt = "http://www.roblox.com/asset?id=153258844"
-        yep2.SkyboxLf = "http://www.roblox.com/asset?id=153258851"
-        yep2.SkyboxRt = "http://www.roblox.com/asset?id=153258851"
-        yep2.SkyboxUp = "http://www.roblox.com/asset?id=153259943"
-        yep2.StarCount = 3000
-        yep2.SunAngularSize = 21
-        yep2.SunTextureId = "rbxasset://sky/sun.jpg"
+   local frame = dropdown.List.Frame
 
-        yep3.Parent = yep
-        yep3.Intensity = 1
-        yep3.Size = 24
-        yep3.Threshold = 0.5
-        yep3.Enabled = true
+   utility:Tween(dropdown, {Size = UDim2.new(1, 0, 0, (entries == 0 and 30) or math.clamp(entries, 0, 7) * 34 + 38)}, 0.3)
+   utility:Tween(dropdown.Search.Button, {Rotation = list and 180 or 0}, 0.3)
 
-        yep4.Parent = yep
-        yep4.Enabled = true
-        yep4.Size = 5.5
-        return
-    end
-    local a = game.Lighting
-    a.TimeOfDay = 20
-    a.Ambient = Color3.fromRGB(33, 33, 33)
-    a.Brightness = 6.67
-    a.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
-    a.ColorShift_Top = Color3.fromRGB(255, 247, 237)
-    a.EnvironmentDiffuseScale = 0.105
-    a.EnvironmentSpecularScale = 0.522
-    a.GlobalShadows = true
-    a.OutdoorAmbient = Color3.fromRGB(51, 54, 67)
-    a.ShadowSoftness = 0.04
-    a.GeographicLatitude = -15.525
-    a.ExposureCompensation = 0.75
+   if entries > 7 then
 
-    local b = Instance.new("BloomEffect", a)
-    b.Enabled = true
-    b.Intensity = 0.04
-    b.Size = 1900
-    b.Threshold = 0.915
+      for i, button in pairs(dropdown.List.Frame:GetChildren()) do
+         if button:IsA("ImageButton") then
+            button.Size = UDim2.new(1, -6, 0, 30)
+         end
+      end
 
-    local c = Instance.new("ColorCorrectionEffect", a)
-    c.Brightness = 0.176
-    c.Contrast = 0.39
-    c.Enabled = true
-    c.Saturation = 0.2
-    c.TintColor = Color3.fromRGB(217, 145, 57)
-    if getgenv().mode == "Summer" then
-        c.TintColor = Color3.fromRGB(255, 220, 148)
-    elseif getgenv().mode == "Autumn" then
-        c.TintColor = Color3.fromRGB(217, 145, 57)
-    else
-        lib:Notify("RTX mode","No mode selected!")
-        lib:Notify("RTX mode","Please select a mode")
-        b:Destroy()
-        c:Destroy()
-    end
+      frame.CanvasSize = UDim2.new(0, 0, 0, (entries * 34) - 4)
+      frame.ScrollBarImageTransparency = 0
+   else
+      frame.CanvasSize = UDim2.new(0, 0, 0, 0)
+      frame.ScrollBarImageTransparency = 1
+   end
+end
+local curfps = tostring("_")
+local curping = tostring("_")
+local curtime = tostring("__:__:__")
+local receive = ""
+local send = ""
+function nilT(v)
+   if v == nil then
+      return true
+   end
+end
+local SGStats = utility:Create("ScreenGui", {
+   Name = "SGStats",
+   Parent = game.CoreGui,
+})
+local ClientStats = utility:Create("Round", {
+   Name = "ClientStats",
+   Size = UDim2.new(0,500,0,20),
+   Position = UDim2.new(0,100,0,-25),
+   ImageColor3 = Color3.fromRGB(1,1,1),
+   Parent = SGStats,
+})
+utility:DraggingEnabled(ClientStats)
+local ShadowStats = utility:Create("Shadow", {
+   ImageColor3 = Color3.fromRGB(239, 131, 16),
+   Parent = ClientStats,
+})
+local StatsLabel = utility:Create("Label", {
+   Name = "StatsLabel",
+   Text = "W-azure | FPS: "..curfps.." | Ping: "..curping.." | Client Time: "..curtime.. " | Send: ".. send .. " | Receive: " .. receive,  
+   TextColor3 = Color3.fromRGB(55, 155, 255),
+   TextSize = 14,
+   TextStrokeTransparency = 1,
+   Font = Enum.Font.GothamBold,
+   Size = UDim2.new(1, -3, 0, 25),
+   TextWrapped = true,
+   Position = UDim2.new(0, 7, 0, -2),
+   TextTransparency = 0,
+   ZIndex = 80,
+   Parent = ClientStats,
+})
+local TimeFunction = run:IsRunning() and time or os.clock
+local LastIteration, Start
+local FrameUpdateTable = {}
 
-    local d = Instance.new("DepthOfFieldEffect", a)
-    d.Enabled = true
-    d.FarIntensity = 0.077
-    d.FocusDistance = 21.54
-    d.InFocusRadius = 20.77
-    d.NearIntensity = 0.277
+function HeartbeatUpdate()
+   LastIteration = TimeFunction()
+   for Index = #FrameUpdateTable, 1, -1 do
+      FrameUpdateTable[Index + 1] = FrameUpdateTable[Index] >= LastIteration - 1 and FrameUpdateTable[Index] or nil
+   end
+   local scripttime=game.Workspace.DistributedGameTime
+   local seconds = scripttime%60
+   local minutes = math.floor(scripttime/60%60)
+   local hours = math.floor(scripttime/3600)
+   local tempo = string.format("%.0f:%.0f:%.0f", hours ,minutes, seconds)
+   FrameUpdateTable[1] = LastIteration
+   curfps = tostring(math.floor(TimeFunction() - Start >= 1 and #FrameUpdateTable or #FrameUpdateTable / (TimeFunction() - Start)))
+   curtime = tempo
+   receive = tostring(math.floor(game:GetService("Stats").DataReceiveKbps+game:GetService("Stats").PhysicsReceiveKbps))
+   send = tostring(math.floor(game:GetService("Stats").DataSendKbps+game:GetService("Stats").PhysicsSendKbps))
+   curping = tostring(math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()))
+   StatsLabel.Text = "W-azure | FPS: "..curfps.." | Ping: "..curping.." | Client Time: "..curtime.. " | Send: ".. send .. " | Receive: " .. receive
+   ClientStats.Size =  UDim2.new(0, string.len(StatsLabel.Text)*StatsLabel.TextSize/1.95, 0, 20)
+end
+Start = TimeFunction()
+run.Heartbeat:Connect(HeartbeatUpdate)
 
-    local e = Instance.new("ColorCorrectionEffect", a)
-    e.Brightness = 0
-    e.Contrast = -0.07
-    e.Saturation = 0
-    e.Enabled = true
-    e.TintColor = Color3.fromRGB(255, 247, 239)
-
-    local e2 = Instance.new("ColorCorrectionEffect", a)
-    e2.Brightness = 0.2
-    e2.Contrast = 0.45
-    e2.Saturation = -0.1
-    e2.Enabled = true
-    e2.TintColor = Color3.fromRGB(255, 255, 255)
-
-    local s = Instance.new("SunRaysEffect", a)
-    s.Enabled = true
-    s.Intensity = 0.01
-    s.Spread = 0.146
-end)
-
-GameSection:addButton("FPS Boost",function()
-    lib:Notify("Fps Boost","Credit to e621")
-    
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/vinhuchi/rblx/api/fpsboost.lua"))()
-end)
-return lib
+end
+return library
