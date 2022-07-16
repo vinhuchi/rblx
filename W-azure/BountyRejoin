@@ -1,0 +1,35 @@
+
+repeat wait()
+until game:IsLoaded()
+
+repeat wait()
+until game:GetService("Players").LocalPlayer
+
+repeat wait()
+until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("LoadingScreen") == nil
+local CG = game:GetService("CoreGui")
+local N = "W-azureHubAutoBounty"
+spawn(function()
+    wait(30)
+    if CG:FindFirstChild(N) then
+    else
+        game.Players.LocalPlayer:Kick("Auto Rejoin Applied")
+    end
+end)
+CG.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(child)
+    if child.Name == 'ErrorPrompt' and child:FindFirstChild('MessageArea') and child.MessageArea:FindFirstChild("ErrorFrame") then
+        if #game.Players:GetPlayers() <= 1 then
+            game.Players.LocalPlayer:Kick("\nRejoining...")
+            wait()
+            game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+        else
+            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+        end    end
+    local GUI = game.CoreGui.RobloxPromptGui.promptOverlay:FindFirstChild("ErrorPrompt")
+    if GUI then
+        if GUI.TitleFrame.ErrorTitle.Text == "Disconnected" then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/vinhuchi/rblx/main/W-azure/api/AutoRejoinServerVip.lua"))()
+        end
+    end
+end)
+print("Auto Rejoin Loaded")
