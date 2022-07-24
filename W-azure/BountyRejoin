@@ -13,7 +13,13 @@ spawn(function()
     wait(30)
     if CG:FindFirstChild(N) then
     else
-        game.Players.LocalPlayer:Kick("Auto Rejoin Applied")
+        if #game.Players:GetPlayers() <= 1 then
+            game.Players.LocalPlayer:Kick("\nRejoining...")
+            wait()
+            game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+        else
+            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+        end  
     end
 end)
 spawn(function()
