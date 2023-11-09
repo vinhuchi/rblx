@@ -903,7 +903,8 @@ function library:CreateWindow(name, version, icon)
 				return UpdateLabel2
 			end
 
-			function pagebuttons.CreateSlider(self,name,min,max,callback,SectionContainer)
+			function pagebuttons.CreateSlider(self,name,min,max,callback)
+                local SectionContainer = SectionContainer
 				return CreateSlider(self,name,min,max,callback,SectionContainer)
 			end
 
