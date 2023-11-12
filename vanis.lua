@@ -271,7 +271,7 @@ function library:CreateWindow(name, version, icon)
         Indicator_3.Parent = Tracker
         Indicator_3.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
         Indicator_3.BorderSizePixel = 0
-        Indicator_3.Size = UDim2.new(0, 0, 1, 0)
+        Indicator_3.Size = UDim2.new(0, 0, 4, 0)
 
         Shadow_1.Name = "Shadow_1"
         Shadow_1.Parent = Indicator_3
@@ -1115,7 +1115,7 @@ function library:CreateWindow(name, version, icon)
 				return UpdateBind
 			end
 
-			function pagebuttons:CreateToggle(title , desc, callback)
+			function pagebuttons:CreateToggle(title , desc,default, callback)
 				title = title or "Title"
 				desc = desc or "Description"
 				callback = callback or function() end
