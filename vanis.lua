@@ -271,7 +271,7 @@ function library:CreateWindow(name, version, icon)
         Indicator_3.Parent = Tracker
         Indicator_3.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
         Indicator_3.BorderSizePixel = 0
-        Indicator_3.Size = UDim2.new(0, 0, 4, 0)
+        Indicator_3.Size = UDim2.new(0, 0, 1, 0)
 
         Shadow_1.Name = "Shadow_1"
         Shadow_1.Parent = Indicator_3
@@ -289,7 +289,7 @@ function library:CreateWindow(name, version, icon)
         TextButton_2.Parent = Indicator_3
         TextButton_2.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
         TextButton_2.Position = UDim2.new(1, -4, 0.5, -4)
-        TextButton_2.Size = UDim2.new(0, 8, 0, 8)
+        TextButton_2.Size = UDim2.new(0, 15, 0, 15)
         TextButton_2.Font = Enum.Font.SourceSans
         TextButton_2.Text = ""
         TextButton_2.TextColor3 = Color3.fromRGB(0, 0, 0)
