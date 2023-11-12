@@ -1115,7 +1115,7 @@ function library:CreateWindow(name, version, icon)
 				return UpdateBind
 			end
 
-			function pagebuttons:CreateToggle(title , desc,default, callback)
+			function pagebuttons:CreateToggle(title , desc, callback)
 				title = title or "Title"
 				desc = desc or "Description"
 				callback = callback or function() end
