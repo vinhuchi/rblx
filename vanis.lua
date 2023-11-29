@@ -31,7 +31,7 @@ function library:CreateWindow(name, version, icon)
 	end
 
 	MyGui.Name = RandomString
-	MyGui.Parent = cloneref(game:GetService("CoreGui"))
+	MyGui.Parent = game:GetService("CoreGui") --cloneref(game:GetService("CoreGui"))
 	MyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	Window.Name = "Window"
