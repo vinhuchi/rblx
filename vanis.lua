@@ -1,3 +1,4 @@
+--Main Functions
 if not game:IsLoaded() then
 	game.Loaded:wait() 
 end
@@ -29,9 +30,8 @@ function library:CreateWindow(name, version, icon)
 	for i = 1, math.random(3,20) do
 		RandomString = RandomString..string.char(math.random(97,122))
 	end
-
 	MyGui.Name = RandomString
-	MyGui.Parent = game:GetService("CoreGui") --cloneref(game:GetService("CoreGui"))
+	MyGui.Parent = string.find(identifyexecutor(),"Fluxus") and game.CoreGui or cloneref(game.Players.LocalPlayer.PlayerGui) -- LOL
 	MyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	Window.Name = "Window"
@@ -219,12 +219,13 @@ function library:CreateWindow(name, version, icon)
     end
     local draggingTable = {}
     local draggingTable2 = {}
-    local CreateSlider = function (self,name,min,max,callback,SectionContainer)--Fixed Retarded Sliding On Mobile
+    local CreateSlider = function (self,name,min,max,default,callback,SectionContainer)--Fixed Retarded Sliding On Mobile
         name = name or "Slider"
         min = min or 16
         max = max or 100
+        default = math.round(default) or 16
         local library4 = {}
-        library4["Value"] = nil
+        library4["Value"] = default
         local Slider = Instance.new("Frame")
         local UICorner_17 = Instance.new("UICorner")
         local Title_4 = Instance.new("TextLabel")
@@ -271,8 +272,14 @@ function library:CreateWindow(name, version, icon)
         Indicator_3.Parent = Tracker
         Indicator_3.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
         Indicator_3.BorderSizePixel = 0
-        Indicator_3.Size = UDim2.new(0, 0, 1, 0)
-
+        function calculatePercentage(value, minRange, maxRange)
+            local range = maxRange - minRange
+            local positionWithinRange = value - minRange
+            local percentage = (positionWithinRange / range)
+        
+            return percentage
+        end
+        Indicator_3.Size = UDim2.new(math.clamp(calculatePercentage(default, min , max), 0, 1), 0, 1, 0)
         Shadow_1.Name = "Shadow_1"
         Shadow_1.Parent = Indicator_3
         Shadow_1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -338,7 +345,7 @@ function library:CreateWindow(name, version, icon)
         ValueText.BorderColor3 = Color3.fromRGB(27, 42, 53)
         ValueText.Size = UDim2.new(1, 0, 1, 0)
         ValueText.Font = Enum.Font.Gotham
-        ValueText.Text = min
+        ValueText.Text = math.round(default)
         ValueText.TextColor3 = Color3.fromRGB(227, 225, 228)
         ValueText.TextSize = 12.000
 
@@ -903,9 +910,9 @@ function library:CreateWindow(name, version, icon)
 				return UpdateLabel2
 			end
 
-			function pagebuttons.CreateSlider(self,name,min,max,callback)
+			function pagebuttons.CreateSlider(self,name,min,max,default,callback)
                 local SectionContainer = SectionContainer
-				return CreateSlider(self,name,min,max,callback,SectionContainer)
+				return CreateSlider(self,name,min,max,default,callback,SectionContainer)
 			end
 
 			function pagebuttons:CreateBox(name, icon, callback)
@@ -1115,7 +1122,7 @@ function library:CreateWindow(name, version, icon)
 				return UpdateBind
 			end
 
-			function pagebuttons:CreateToggle(title , desc, callback)
+			function pagebuttons:CreateToggle(title , desc, state, callback)
 				title = title or "Title"
 				desc = desc or "Description"
 				callback = callback or function() end
@@ -1205,14 +1212,16 @@ function library:CreateWindow(name, version, icon)
 
 				UICorner_4.CornerRadius = UDim.new(0.5, 0)
 				UICorner_4.Parent = TButton
-
+                if state then
+                    TS:Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=0}):Play()
+                end
 				TButton.MouseButton1Click:Connect(function()
-					if not f then
-						f = true
+					if not state then
+						state = true
 						TS:Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=0}):Play()
 						callback(true)
 					else
-						f = false
+						state = false
 						TS:Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=1}):Play()
 						callback(false)
 					end
@@ -1774,5 +1783,4 @@ function library:CreateWindow(name, version, icon)
 	end
 	return tabs
 end
-
 return library
