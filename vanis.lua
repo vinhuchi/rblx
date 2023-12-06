@@ -31,7 +31,7 @@ function library:CreateWindow(name, version, icon)
 		RandomString = RandomString..string.char(math.random(97,122))
 	end
 	MyGui.Name = RandomString
-	MyGui.Parent = string.find(identifyexecutor(),"Fluxus") and game.CoreGui or cloneref(game.Players.LocalPlayer.PlayerGui) -- LOL
+	MyGui.Parent = cloneref(game.Players.LocalPlayer.PlayerGui) -- LOL
 	MyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	Window.Name = "Window"
