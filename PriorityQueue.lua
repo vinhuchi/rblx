@@ -77,3 +77,4 @@ function PriorityQueue:pop()
     self:sink()
     return retval
 end
+return PriorityQueue
