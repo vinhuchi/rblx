@@ -127,19 +127,6 @@ function library:CreateWindow(name, version, icon)
 	_4pxShadow2px_2.ScaleType = Enum.ScaleType.Slice
 	_4pxShadow2px_2.SliceCenter = Rect.new(17, 17, 283, 283)
 
-	Close.MouseButton1Click:Connect(function()
-		TS:Create(Window, TweenInfo.new(0.5), {Size = UDim2.new(0, 600, 0, 0)}):Play()
-		repeat
-			wait()
-		until Window.Size == UDim2.new(0, 600, 0, 0)
-		wait(0.1)
-		TS:Create(Window, TweenInfo.new(0.5), {Size = UDim2.new(0, 0, 0, 0)}):Play()
-		repeat
-			wait()
-		until Window.Size == UDim2.new(0, 0, 0, 0)
-		MyGui:Remove()
-	end)
-
 	Minimize.MouseButton1Click:Connect(function()
 		if not MinimizeGui then
 			MinimizeGui = true
