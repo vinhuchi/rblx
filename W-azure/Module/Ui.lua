@@ -1,3 +1,5 @@
+repeat wait()
+until getgenv().LoadUi
 local Title = "W-azure" .. (getgenv().Premium and " [Premium]" or "")
 local SubTitle = "True V2 discord.gg/w-azure"
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/vinhuchi/rblx/main/FixedFluent.lua"))()
