@@ -99,6 +99,26 @@ local UiIntilize = {
         {Mode="Toggle",Title="Auto Cake Prince",Description="",Args = {"Cake Prince","Enable"}},
         {Mode="Toggle",Title="Auto Spawn Soul Reaper",Args = {"Spawn Soul Reaper","Enable"}},
         {Mode="Toggle",Title="Auto Soul Reaper",Args = {"Soul Reaper","Enable"}},
+        {
+            Mode = "Dropdown",
+            Title = "Select Boss To Snipe",
+            Multi = true, 
+            Table = AllBoss[tostring(game.PlaceId)],
+            Default = getgenv().Setting.BossSniper.SelectedBoss or {},
+            OnChange = function(state)
+                local Values = {}
+                for Value, State in pairs(state) do
+                    if  type(Value) == "string" then
+                        table.insert(Values, Value)
+                    end
+                end 
+                
+
+                getgenv().Setting.BossSniper.SelectedBoss = Values
+                SettingManager:Save()
+            end
+        },     
+        {Mode="Toggle",Title="Start Boss Snipe",Description="",Args={"BossSniper","Enable"}},
         {Mode="Toggle",Title="Auto Bartilo Quest",Description="Sea 2 Function",Args = {"Bartilo","Enable"}},
         {Mode="Toggle",Title="Auto Race Evolve",Description="Sea 2 Function, Need Bartilo Quest Finish",Args = {"Race Evolve","Enable"}},
         {Mode="Toggle",Title="Auto Factory",Description="Sea 2 Function Only",Args = {"Factory","Enable"}},
@@ -116,13 +136,23 @@ local UiIntilize = {
         {Mode="Button",Title="Upgrade Yoru V2",Description="Only useable if you have yoru",Callback=function()
             IslandCaller("YoruV2")
         end},
+        {Mode="Toggle",Title="Yoru V3",Description="Auto Upgrade Yoru V3",Args = {"YoruV3","Enable"}},
+        {Mode="Dropdown",Title="Select Player",Description="Select Account to upgrade together",Table=IslandCaller("__StrGetPlayers"),OnChange=function (state)
+            getgenv().Setting["YoruV3"].SelectedPlayer = state
+        end},
+        {Mode="Button",Title="Refresh Players",Callback=function()
+            ElementsCollection["Sub Farming"]["Select Player"]:SetValues(IslandCaller("__StrGetPlayers"))
+        end},
+        {Mode="Toggle",Title="Account To Upgrade Yoru V3",Description="Turn On This If This Is Account Want to Upgrade, do not if account to spawn Black Beard",Args = {"YoruV3","Upgrade"}},
         {Mode="Toggle",Title="Race Evolve Hop",Description="Turning On This Will Make Race Evolve Hopping For Faster Farming",Args = {"Race Evolve","Hop"}},
         {Mode="Toggle",Title="Black Beard Hop",Description="Auto Hop For Black Beard",Args={"Black Beard Hop","Enable"}},
         {Mode="Toggle",Title="Tushita Hop (Need All Haki Colors)",Description="Auto Chest + Auto Elite Till Find Cup And Spawn Then Get Tushita",Args={"Tushita Hop__1","Enable"}},
-        {Mode="Toggle",Title="Hybrid Fruit Hop","Pirate Raid + Collect Fruit Hop",Description="Pirate Raid + Collect Fruit",Args={"Hybrid Fruit Hop","Enable"}},
+        {Mode="Toggle",Title="Hybrid Fruit Hop",Description="Pirate Raid + Collect Fruit Hop",Args={"Hybrid Fruit Hop","Enable"}},
+        {Mode="Toggle",Title="Raid Fruit Hop",Description="Pirate Raid + Collect Fruit + Raid Hop" ,Args={"Raid Fruit Hop","Enable"}},
         {Mode="Toggle",Title="Auto Law",Description="Auto Farm Law",Args={"Law","Enable"}},
         {Mode="Toggle",Title="Auto Cyborg",Description="Auto Chest For Fist Then Auto Law",Args={"Fully Cyborg","Enable"}},
-        {Mode="Toggle",Title="Auto Ghoul Hop",Description="Auto Find Torch + Ghoul",Args={"Fully Ghoul","Enable"}},
+        {Mode="Toggle",Title="Auto Ghoul Hop",Description="Auto Find Torch + Ghoul (Very Rare, Dont Recommend)",Args={"Fully Ghoul","Enable"}},
+        {Mode="Toggle",Title="Boss Snipe Hop",Description="",Args={"BossSniper","Hop"}},
         {Mode="Label",Title="Chest Count"},
         {Mode="Toggle",Title="Auto Chest",Description="Stop On God Chalice And Fist Of Darkness By Default",Args={"Collect Chest","Enable"}},
         {Mode="Toggle",Title="Auto Chest Hop",Description="Hop After x Chest",Args = {"Collect Chest","Hop"}},
@@ -146,7 +176,8 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },        
-        {Mode="Toggle",Title="Insta Tp Chest",Description="Have A Risk Of Getting Banned",Args={"Collect Chest","InstaTP"}},
+
+        {Mode="Toggle",Title="Insta Tp Chest",Description="Have A Risk Of Getting Banned(Noone yet)",Args={"Collect Chest","InstaTP"}},
         {Mode="Toggle",Title="Auto Level Observation",Description="Farm Observation Level Till Max",Args={"Level Observation","Enable"}},
         {Mode="Toggle",Title="Level Observation Hop",Description="Hopping For leveling Observation",Args={"Level Observation","Hop"}},
         {Mode="Toggle",Title="Auto Observation V2",Description="Must Have Maxed Ken Haki + Finish Citizen Quest",Args = {"Evolve Observation","Enable"}},
