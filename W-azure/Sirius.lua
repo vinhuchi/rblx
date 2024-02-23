@@ -106,7 +106,7 @@ local inf = 1 / 0;
 local workspace = getService(game, "Workspace");
 local runService = getService(game, "RunService");
 local players = getService(game, "Players");
-local coreGui = getService(game, "CoreGui");
+local coreGui = game.Players.LocalPlayer.PlayerGui
 local userInputService = getService(game, "UserInputService");
 
 -- cache
