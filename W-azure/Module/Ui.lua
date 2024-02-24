@@ -603,7 +603,7 @@ local UiIntilize = {
             Title = "Selected Chip",
             Content = getgenv().Setting.Raid.Select or ""
         },
-        {Mode="Dropdown",Title="Select",Table={"Flame","Ice","Sand","Quake","Light","Dark","String","Rumble","Magma","Human: Buddha","Bird: Phoenix","Dough"},OnChange=function (state)
+        {Mode="Dropdown",Title="Select",Table={"Flame","Ice","Sand","Quake","Light","Dark","Spider","Rumble","Magma","Human: Buddha","Bird: Phoenix","Dough"},OnChange=function (state)
             getgenv().Setting.Raid.Select = state
             SettingManager:Save()        
         end}, --Todo: Get Chips Data From Game
