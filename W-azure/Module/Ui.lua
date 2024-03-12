@@ -155,6 +155,7 @@ local UiIntilize = {
         {Mode="Toggle",Title="Boss Snipe Hop",Description="",Args={"BossSniper","Hop"}},
         {Mode="Label",Title="Chest Count"},
         {Mode="Toggle",Title="Auto Chest",Description="Stop On God Chalice And Fist Of Darkness By Default",Args={"Collect Chest","Enable"}},
+        {Mode="Toggle",Title="Ignore Items - Chest",Description="Enable This To Not Stop On Getting Fist of Darkness Or God Chalice",Args={"Collect Chest","IgnoreItem"}},
         {Mode="Toggle",Title="Auto Chest Hop",Description="Hop After x Chest",Args = {"Collect Chest","Hop"}},
         {
             Mode = "Dropdown",
