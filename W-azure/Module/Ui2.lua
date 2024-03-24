@@ -1971,8 +1971,8 @@ for _,Name in pairs(UiOrders) do
         else
             BuildUI(Tab,i,v,Name)
         end
-
+        task.wait()
     end
-    task.wait()
+    
 end
 return Title, SubTitle, ElementsCollection
