@@ -1700,7 +1700,7 @@ local UiIntilize = {
         },
         {
             Mode = "TextBox",
-            Title = "Job id",
+            Title = "Job Id",
             Callback = function(arg)
                 pcall(function ()
                     local a = arg
@@ -1709,6 +1709,18 @@ local UiIntilize = {
                     end
                 end)
 
+            end
+        },
+        {
+            Mode = "Button",
+            Title = "Clear Job Id",
+            Callback = function(arg)
+                local _, err = pcall(function ()
+                    ElementsCollection["Game-Server"]["Job Id"]:SetValue("")
+                end)
+                if err then
+                    print(err)
+                end
             end
         },
         {
