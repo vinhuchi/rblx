@@ -509,6 +509,15 @@ local UiIntilize = {
         },
         {
             Mode = "Toggle",
+            Title = "Silent Aim Selected",
+            Args = {"Pvp", "SilentAimSelected"},
+            OnChange = function(state)
+                getgenv().Setting.Pvp.SilentAimSelected = state
+                SettingManager:Save()
+            end
+        },
+        {
+            Mode = "Toggle",
             Title = "Silent Aim Near Player",
             Args = {"Pvp", "SilentAimNear"},
             OnChange = function(state)
@@ -1117,6 +1126,41 @@ local UiIntilize = {
         },
         {
             Mode = "Toggle",
+            Title = "Use Weapon In Kill Trial",
+            Args = {"Trial", "UseWeapon"},
+        },
+        {
+            Mode = "Dropdown",
+            Title = "Select Weapon For Kill trial",
+            Multi = false, 
+            Table = {"Sword","Gun"},
+            Default = getgenv().Setting.Trial.WeaponToUse,
+            OnChange = function(Value)
+                getgenv().Setting.Trial.WeaponToUse = Value
+                SettingManager:Save()
+            end
+        },
+        {
+            Mode = "Dropdown",
+            Title = "Skills Weapon",
+            Multi = true, 
+            Table = {"Z","X"},
+            Default = getgenv().Setting.Trial.WeaponSkills or {},
+            OnChange = function(state)
+                local Values = {}
+                for Value, State in pairs(state) do
+                    if  type(Value) == "string" then
+                        table.insert(Values, Value)
+                    end
+                end 
+                
+
+                getgenv().Setting.Trial.WeaponSkills = Values
+                SettingManager:Save()
+            end
+        },
+        {
+            Mode = "Toggle",
             Title = "Auto Train",
             Args = {"AutoTrainTrial", "Enable"},
             OnChange = function(state)
@@ -1151,7 +1195,15 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
-
+        {
+            Mode = "Toggle",
+            Title = "Auto Reset After Trial",
+            Args = {"Trial", "AutoReset"},
+            OnChange = function(state)
+                getgenv().Setting.Trial.AutoReset = state
+                SettingManager:Save()
+            end
+        },
         {
             Mode = "Toggle",
             Title = "Auto Look Moon",
@@ -1554,8 +1606,37 @@ local UiIntilize = {
                 getgenv().Setting.SkillsSettingRemake["Blox Fruit"] = Values
                 SettingManager:Save()
             end
-        }
-
+        },
+        function ()
+            local MultiBuild = {}
+            local Pos = {"Z","X","C","V","F"}
+            for i,v in pairs(Pos) do
+                table.insert(
+                    MultiBuild,
+                    {
+                        Mode = "Dropdown",
+                        Title = "Hold Time "..v,
+                        Args = {"FruitSkillsHold", v},
+                        Table = {0,0.25,0.5,1,2,3},
+                        Default = (function ()
+                            local Default = {0,0.25,0.5,1,2,3}
+                            local Found = 1
+                            if not table.find(Default,getgenv().Setting.FruitSkillsHold[v]) then 
+                                getgenv().Setting.FruitSkillsHold[v] = 0
+                            else
+                                Found = table.find(Default,getgenv().Setting.FruitSkillsHold[v]) 
+                            end
+                            return Found
+                        end)(),
+                        OnChange = function(value)
+                            getgenv().Setting.FruitSkillsHold[v] = tonumber(value)
+                            SettingManager:Save()
+                        end
+                    } 
+                )
+            end
+            return MultiBuild
+        end,
     },
     ["Webhook"] = {
         {
@@ -1575,6 +1656,14 @@ local UiIntilize = {
         },
     },
     ["Game-Server"] = {
+        {
+            Mode = "Toggle",
+            Title = "Panel [Premium]",
+            Args = {"Panel","Enable"},
+            OnChange = function(state)
+                SettingManager:Save()
+            end
+        },
         {
             Mode = "Button",
             Title = "Copy Job Id",
@@ -1885,4 +1974,3 @@ for _,Name in pairs(UiOrders) do
 
     end
 end
-return Title, SubTitle, ElementsCollection
