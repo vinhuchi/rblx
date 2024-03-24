@@ -1975,3 +1975,4 @@ for _,Name in pairs(UiOrders) do
     end
     task.wait()
 end
+return Title, SubTitle, ElementsCollection
