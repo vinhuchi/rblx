@@ -1973,4 +1973,5 @@ for _,Name in pairs(UiOrders) do
         end
 
     end
+    task.wait()
 end
