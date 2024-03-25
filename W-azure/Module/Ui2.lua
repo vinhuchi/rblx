@@ -1983,7 +1983,9 @@ for _,Name in pairs(UiOrders) do
         else
             BuildUI(Tab,i,v,Name)
         end
-        task.wait()
+        if getgenv().SlowLoadUi then
+            task.wait()
+        end
     end
     
 end
