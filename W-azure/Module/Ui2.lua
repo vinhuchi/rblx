@@ -291,6 +291,13 @@ local UiIntilize = {
             Callback = function()
             end
         },]]
+        {Mode="Button",Title="Change Team To Pirates",Description="Team Changer",Callback=function()
+            game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("SetTeam","Pirates")
+
+        end},
+        {Mode="Button",Title="Change Team To Marines",Description="Team Changer",Callback=function()
+            game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("SetTeam","Marines")
+        end},
         {
             Mode = "Button",
             Title = "Remove Enemies Skill Stun",
