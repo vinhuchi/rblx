@@ -16,7 +16,7 @@ local Window = getgenv().Window or Fluent:CreateWindow({
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
-local UiOrders = {"Main Farm","Stack Auto farm","Sub Farming","Status","Player-Status","Fruit","Local Player","Travel","Pvp-Visual","Raid-Material","RaceV4-Mirage","Sea Events","Shop","Setting","Webhook","Game-Server","One Click"}
+local UiOrders = {"Main Farm","Stack Auto farm","Sub Farming","Status","Player-Status","Fruit","Local Player","Travel","Pvp-Visual","Raid-Material","RaceV4-Mirage","Sea Events","Shop","Setting","Webhook","Game-Server","One Click","One Click Debugger"}
 local TabCollections = {
 }
 ElementsCollection = {}
@@ -187,6 +187,7 @@ local UiIntilize = {
         {Mode="Toggle",Title="Observation V2 Hop",Description="Hopping For Finding Materials To Get Evolve Faster",Args = {"Evolve Observation","Hop"}},
         {Mode="Toggle",Title="Auto Saber Hop",Args={"__SaberHop","Enable"}},
         {Mode="Toggle",Title="Auto Pole Hop",Args={"__PoleHop","Enable"}},
+        {Mode="Toggle",Title="Auto Katakuri Hop",Description="Hop If Dimension kill Is lower than 300",Args={"__KatakuriHop","Enable"}},
         {Mode="Toggle",Title="Auto Citizen Quest",Description="Must Be Level 1800 Above",Args = {"Citizen Quest","Enable"}},
         {Mode="Toggle",Title="Citizen Quest Hop",Description="",Args = {"Citizen Quest","Hop"}},
         {Mode="Toggle",Title="Auto Get Rainbow Haki",Description="",Args = {"Rainbow Haki","Enable"}},
@@ -264,35 +265,7 @@ local UiIntilize = {
         }
     },
     ["Local Player"] = {
-        --[[{
-            Mode = "Button",
-            Title = "Kick Player Safe Zone",
-            Description = "Near Safe Zone + Need To Shit On Ship",
-            Callback = KickPlayer
-        },
-        {
-            Mode = "Button",
-            Title = "Buy Ship",
-            Description = "",
-            Callback = function()
-=
-            end
-        },
 
-        {
-            Mode = "Button",
-            Title = "Fly",
-            Description = "",
-            Callback = function()
-            end
-        },
-        {
-            Mode = "Button",
-            Title = "Stop Fly",
-            Description = "",
-            Callback = function()
-            end
-        },]]
         {Mode="Button",Title="Change Team To Pirates",Description="Team Changer",Callback=function()
             game:GetService("ReplicatedStorage").Remotes["CommF_"]:InvokeServer("SetTeam","Pirates")
 
@@ -744,36 +717,6 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
-       --[[ {
-            Mode = "Toggle",
-            Title = "Auto Spawn Ship",
-            Description = "For Farming Sharks, Piranha, Terror Shark",
-            Args = {"SeaEvents", "AutoBuyShip"},
-            OnChange = function(state)
-                getgenv().Setting.SeaEvents.AutoBuyShip = state
-                SettingManager:Save()
-            end
-        },
-        {
-            Mode = "Toggle",
-            Title = "Auto Tp Ship To Zone 6",
-            Description = "Insta TP Ship, Must Not Have Any Players In Ship Or Errors",
-            Args = {"SeaEvents", "AutoTpShip"},
-            OnChange = function(state)
-                getgenv().Setting.SeaEvents.AutoTpShip = state
-                SettingManager:Save()
-            end
-        },
-        {
-            Mode = "Toggle",
-            Title = "Auto Sit",
-            Description = "Auto Sit At Your Ship",
-            Args = {"SeaEvents", "AutoSit"},
-            OnChange = function(state)
-                getgenv().Setting.SeaEvents.AutoSit = state
-                SettingManager:Save()
-            end
-        },]]
         {
             Mode = "Toggle",
             Title = "Auto Terror Shark",
@@ -862,25 +805,10 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
-        --[[{
-            Mode = "Toggle",
-            Title = "Only Farm Near",
-            Description = "Only Farm Near Mobs So You Dont Have To Deal With Far Mobs That Aren't From Yours",
-            Args = {"SeaEvents", "OnlyFarmNearMob"},
-            OnChange = function(state)
-                getgenv().Setting.SeaEvents.OnlyFarmNearMob = state
-                SettingManager:Save()
-            end
-        },]]
         {
             Mode = "Label",
             Title = "Leviathan Section"
         },
-        --{
-         --   Mode = "Button",
-           -- Title = "Tween Ship To Tiki",
-        --    Description = "For Transporting Heart",
-        --},
         {
             Mode = "Button",
             Title = "Tp To Frozen island",
@@ -992,17 +920,6 @@ local UiIntilize = {
             Mode = "Label",
             Title = "Sea Events Setting"
         },
-        --[[
-        {
-            Mode = "Toggle",
-            Title = "Spin Ship If In Farming",
-            Description = "Safe Mode Ship",
-            Args = {"SeaEvents", "SpinShipAttack"},
-            OnChange = function(state)
-                getgenv().Setting.SeaEvents.SpinShipAttack = state
-                SettingManager:Save()
-            end
-        },]]
         {
             Mode = "Toggle",
             Title = "Spin Ship If Farming",
@@ -1013,16 +930,6 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
-       -- {
-        --    Mode = "Toggle",
-        --    Title = "Spin Ship If Idle",
-        --    Description = "Safe Mode Ship",
-        --    Args = {"SeaEvents", "SpinShipIdle"},
-        --    OnChange = function(state)
-        --        getgenv().Setting.SeaEvents.SpinShipIdle = state
-        --        SettingManager:Save()
-        --    end
-        --},
         {
             Mode = "Slider",
             Title = "Spin Distance",
@@ -1300,50 +1207,7 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
-        
-       --[[ {
-            Mode = "Toggle",
-            Title = "Auto Trade X2 Exp (Candy)",
-            Args = {"Shop", "Candy X2 EXP"},
-            OnChange = function(state)
-                getgenv().Setting.Shop["Candy X2 EXP"] = state
-                SettingManager:Save()
-            end
-        },
-        {
-            Mode = "Toggle",
-            Title = "Auto Trade 500 Fragments (Candy)",
-            Args = {"Shop", "Candy 500 Fragments"},
-            OnChange = function(state)
-                getgenv().Setting.Shop["Candy 500 Fragments"] = state
-                SettingManager:Save()
-            end
-        },
-        {
-            Mode = "Button",
-            Title = "Stats Refund( Candy)",
-            Description = "75 Candy",
-            Callback = function()
-                local args = {
-                    [1] = "Candies",
-                    [2] = "Buy",
-                    [3] = 1,
-                    [4] = 2
-                }
-                
-                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer(unpack(args))            
-            end
-        },
-        {
-            Mode = "Button",
-            Title = "Reroll Race( Candy)",
-            Description = "100 Candy",
-            Callback = function()
-                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("CommF_"):InvokeServer("Candies","Buy",1,3)         
-            end
 
-            
-        },]]
         {
             Mode = "Button",
             Title = "Stats Refund",
@@ -1880,122 +1744,127 @@ local UiIntilize = {
 
             end
         }
-    }
+    },
+    ["One Click Debugger"] = {
+        {Mode="Label",Title="Raid"},
+        {Mode="Label",Title="Spawn Rip Indra"},
+        {Mode="Label",Title="Unlock Sea 2"},
+        {Mode="Label",Title="Unlock Sea 3"},
+        {Mode="Label",Title="Travel Sea 3"},
+    },
 }
 print("Adding Shop Items")
-for _,v in pairs(getgenv().IslandVariable.Items) do 
-    for i,t in pairs(v) do
-        table.insert(UiIntilize["Shop"],{
-            Mode = "Label",
-            Title = i .. " Section",
-        })
-        local AllMelees = {}
-        local Caller ={}
-        for _,v2 in pairs(t) do
-            table.insert(AllMelees,v2.Name)
-            Caller[v2.Name]=v2.Args
-        end
-        table.insert(UiIntilize["Shop"],{Mode="Dropdown",Title=i,Table=AllMelees,OnChange=function (state)
-            if Caller[state] then
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(table.unpack(Caller[state]))
+    for _,v in pairs(getgenv().IslandVariable.Items) do 
+        for i,t in pairs(v) do
+            table.insert(UiIntilize["Shop"],{
+                Mode = "Label",
+                Title = i .. " Section",
+            })
+            local AllMelees = {}
+            local Caller ={}
+            for _,v2 in pairs(t) do
+                table.insert(AllMelees,v2.Name)
+                Caller[v2.Name]=v2.Args
             end
-        end})
-    end
-end
-print("Building Ui")
-
-local BuildUI = function (Tab,i,v,Name)
-
-    if v.Mode == "Toggle" then
-        local pointer = getgenv().Setting
-        local args = v.Args
-        for i = 1, #args - 1 do
-            pointer = pointer[args[i]]
-        end
-        local BuildToggle = {}
-        BuildToggle.Title = v.Title
-        BuildToggle.Default = pointer[args[#args]]
-        if v.Description then
-            BuildToggle.Description  = v.Description
-        end
-        ElementsCollection[Name][v.Title] =  Tab:AddToggle(v.Title, BuildToggle)
-        ElementsCollection[Name][v.Title]:OnChanged(function()
-            pointer[args[#args]] = UiSetting[v.Title].Value
-            if not v.NoSave then
-                SettingManager:Save()
-            end
-        end)
-    elseif v.Mode == "Label" then 
-        local BuildLabel = {}
-        BuildLabel.Title=v.Title
-        if v.Content then
-            BuildLabel.Content = v.Content
-        end
-        ElementsCollection[Name][v.Title] = Tab:AddParagraph(BuildLabel)
-    elseif v.Mode == "Button" then
-        local BuildButton = {}
-        BuildButton.Title = v.Title
-        BuildButton.Callback = v.Callback
-        if v.Description then 
-            BuildButton.Description = v.Description
-        end
-        ElementsCollection[Name][v.Title]  = Tab:AddButton(BuildButton) 
-    elseif v.Mode == "Slider" then
-        local BuildSlider = {}
-        BuildSlider.Title = v.Title
-
-        if v.Description then 
-            BuildSlider.Description = v.Description
-        end
-        if v.Default then
-            BuildSlider.Default = v.Default
-        end
-        BuildSlider.Min = v.Min
-        BuildSlider.Max = v.Max
-        BuildSlider.Rounding = 1
-        ElementsCollection[Name][v.Title]  = Tab:AddSlider(v.Title,BuildSlider)  
-        ElementsCollection[Name][v.Title]:OnChanged(function (v2)
-            v.OnChange(tonumber(v2))
-        end)
-    elseif v.Mode == "Dropdown" then
-        local BuildDropdown = {}
-        BuildDropdown.Title = v.Title
-
-        if v.Description then 
-            BuildDropdown.Description = v.Description
-        end
-        if v.Multi then
-            BuildDropdown.Multi = v.Multi 
-        end
-        if v.Default then
-            BuildDropdown.Default = v.Default 
-        end
-        BuildDropdown.Values = v.Table
-        ElementsCollection[Name][v.Title]  = Tab:AddDropdown(v.Title,BuildDropdown)  
-        ElementsCollection[Name][v.Title]:OnChanged(v.OnChange)
-    elseif v.Mode == "TextBox" then 
-        local BuildTextBox = {}
-        BuildTextBox.Title = v.Title
-        BuildTextBox.Callback = v.Callback
-        BuildTextBox.Finished = v.Finished
-        ElementsCollection[Name][v.Title]  = Tab:AddInput(v.Title,BuildTextBox)  
-    end
-end
-for _,Name in pairs(UiOrders) do
-    TabCollections[Name] = Window:AddTab({ Title = Name, Icon = "" })
-    local Tab = TabCollections[Name]
-    for i,v in pairs(UiIntilize[Name]) do   
-        if type(v)== 'function' then 
-            for i2,v2 in pairs(v()) do
-                BuildUI(Tab,i2,v2,Name)
-            end
-        else
-            BuildUI(Tab,i,v,Name)
-        end
-        if getgenv().SlowLoadUi then
-            task.wait()
+            table.insert(UiIntilize["Shop"],{Mode="Dropdown",Title=i,Table=AllMelees,OnChange=function (state)
+                if Caller[state] then
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(table.unpack(Caller[state]))
+                end
+            end})
         end
     end
-    
-end
-return Title, SubTitle, ElementsCollection
+    print("Building Ui")
+    local BuildUI = function (Tab,i,v,Name)
+
+        if v.Mode == "Toggle" then
+            local pointer = getgenv().Setting
+            local args = v.Args
+            for i = 1, #args - 1 do
+                pointer = pointer[args[i]]
+            end
+            local BuildToggle = {}
+            BuildToggle.Title = v.Title
+            BuildToggle.Default = pointer[args[#args]]
+            if v.Description then
+                BuildToggle.Description  = v.Description
+            end
+            ElementsCollection[Name][v.Title] =  Tab:AddToggle(v.Title, BuildToggle)
+            ElementsCollection[Name][v.Title]:OnChanged(function()
+                pointer[args[#args]] = UiSetting[v.Title].Value
+                if not v.NoSave then
+                    SettingManager:Save()
+                end
+            end)
+        elseif v.Mode == "Label" then 
+            local BuildLabel = {}
+            BuildLabel.Title=v.Title
+            if v.Content then
+                BuildLabel.Content = v.Content
+            end
+            ElementsCollection[Name][v.Title] = Tab:AddParagraph(BuildLabel)
+        elseif v.Mode == "Button" then
+            local BuildButton = {}
+            BuildButton.Title = v.Title
+            BuildButton.Callback = v.Callback
+            if v.Description then 
+                BuildButton.Description = v.Description
+            end
+            ElementsCollection[Name][v.Title]  = Tab:AddButton(BuildButton) 
+        elseif v.Mode == "Slider" then
+            local BuildSlider = {}
+            BuildSlider.Title = v.Title
+
+            if v.Description then 
+                BuildSlider.Description = v.Description
+            end
+            if v.Default then
+                BuildSlider.Default = v.Default
+            end
+            BuildSlider.Min = v.Min
+            BuildSlider.Max = v.Max
+            BuildSlider.Rounding = 1
+            ElementsCollection[Name][v.Title]  = Tab:AddSlider(v.Title,BuildSlider)  
+            ElementsCollection[Name][v.Title]:OnChanged(function (v2)
+                v.OnChange(tonumber(v2))
+            end)
+        elseif v.Mode == "Dropdown" then
+            local BuildDropdown = {}
+            BuildDropdown.Title = v.Title
+
+            if v.Description then 
+                BuildDropdown.Description = v.Description
+            end
+            if v.Multi then
+                BuildDropdown.Multi = v.Multi 
+            end
+            if v.Default then
+                BuildDropdown.Default = v.Default 
+            end
+            BuildDropdown.Values = v.Table
+            ElementsCollection[Name][v.Title]  = Tab:AddDropdown(v.Title,BuildDropdown)  
+            ElementsCollection[Name][v.Title]:OnChanged(v.OnChange)
+        elseif v.Mode == "TextBox" then 
+            local BuildTextBox = {}
+            BuildTextBox.Title = v.Title
+            BuildTextBox.Callback = v.Callback
+            BuildTextBox.Finished = v.Finished
+            ElementsCollection[Name][v.Title]  = Tab:AddInput(v.Title,BuildTextBox)  
+        end
+    end
+    for _,Name in pairs(UiOrders) do
+        TabCollections[Name] = Window:AddTab({ Title = Name, Icon = "" })
+        local Tab = TabCollections[Name]
+        for i,v in pairs(UiIntilize[Name]) do   
+            if type(v)== 'function' then 
+                for i2,v2 in pairs(v()) do
+                    BuildUI(Tab,i2,v2,Name)
+                end
+            else
+                BuildUI(Tab,i,v,Name)
+            end
+            if getgenv().SlowLoadUi then
+                task.wait()
+            end
+        end
+        
+    end
