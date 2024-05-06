@@ -1868,3 +1868,4 @@ print("Adding Shop Items")
         end
         
     end
+return Title, SubTitle, ElementsCollection
