@@ -1746,6 +1746,7 @@ local UiIntilize = {
         }
     },
     ["One Click Debugger"] = {
+        {Mode="Label",Title="God Human Progress"},
         {Mode="Label",Title="Raid"},
         {Mode="Label",Title="Spawn Rip Indra"},
         {Mode="Label",Title="Unlock Sea 2"},
