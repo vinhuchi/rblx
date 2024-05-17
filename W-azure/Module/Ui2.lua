@@ -16,7 +16,7 @@ local Window = getgenv().Window or Fluent:CreateWindow({
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
-local UiOrders = {"Main Farm","Stack Auto farm","Sub Farming","Status","Player-Status","Fruit","Local Player","Travel","Pvp-Visual","Raid-Material","RaceV4-Mirage","Sea Events","Shop","Setting","Webhook","Game-Server","One Click","One Click Debugger"}
+local UiOrders = {"Main Farm","Stack Auto farm","Sub Farming","Status","Player-Status","Fruit","Local Player","Travel","Pvp-Visual","Raid-Material","RaceV4-Mirage","Sea Events","Sub Class","Shop","Setting","Webhook","Game-Server","One Click","One Click Debugger"}
 local TabCollections = {
 }
 ElementsCollection = {}
@@ -145,11 +145,11 @@ local UiIntilize = {
         {Mode="Button",Title="Refresh Players",Callback=function()
             ElementsCollection["Sub Farming"]["Select Player"]:SetValues(IslandCaller("__StrGetPlayers"))
         end},
-
+        
+        
         {Mode="Toggle",Title="Account To Upgrade Yoru V3",Description="Turn On This If This Is Account Want to Upgrade, do not if account to spawn Black Beard",Args = {"YoruV3","Upgrade"}},
         {Mode="Toggle",Title="Auto BlackSmith",Description="Self Explain",Args = {"BlackSmith","Enable"}},
         {Mode="Toggle",Title="BlackSmith Sword/Gun Toggle",Description="Off = Sword, On = Gun",Args = {"BlackSmith","WeaponType"}},
-
         {Mode="Toggle",Title="Race Evolve Hop",Description="Turning On This Will Make Race Evolve Hopping For Faster Farming",Args = {"Race Evolve","Hop"}},
         {Mode="Toggle",Title="Black Beard Hop",Description="Auto Hop For Black Beard",Args={"Black Beard Hop","Enable"}},
         {Mode="Toggle",Title="Tushita Hop (Need All Haki Colors)",Description="Auto Chest + Auto Elite Till Find Cup And Spawn Then Get Tushita",Args={"Tushita Hop__1","Enable"}},
@@ -753,6 +753,16 @@ local UiIntilize = {
         },
         {
             Mode = "Toggle",
+            Title = "Auto Repair Ship",
+            Description = "Must Have ShipWright",
+            Args = {"SeaEvents", "RepairShip"},
+            OnChange = function(state)
+                getgenv().Setting.SeaEvents.RepairShip = state
+                SettingManager:Save()
+            end
+        },
+        {
+            Mode = "Toggle",
             Title = "Ignore Sea Beast",
             Description = "Fly To Ignore Sea Beast, Must Turn On Auto Sea beast",
             Args = {"SeaEvents", "IgnoreSeaBeast"},
@@ -971,6 +981,28 @@ local UiIntilize = {
             end
         }
     
+    },
+    ["Sub Class"] = {
+        {
+            Mode = "Label",
+            Title = "Status",
+        },
+        {
+            Mode = "Toggle",
+            Title = "Start Unlocking SubClass",
+            Args = {"SubClass", "Enable"},
+        },
+        {
+            Mode = "Label",
+            Title = "Select SubClass",
+        },
+        {
+            Mode = "Toggle",
+            Title = "Shipwright",
+            Description ="Must Use [Gun] Soul Guitar Or Bazooka To Farm Wood",
+            Args = {"SubClass", "Shipwright"},
+        },
+
     },
     ["RaceV4-Mirage"] = {
         {
@@ -1680,6 +1712,7 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
+
         {
             Mode = "Toggle",
             Title = "Remove limit 1 Minute Get Quest",
@@ -1756,6 +1789,7 @@ local UiIntilize = {
         {Mode="Label",Title="Unlock Sea 2"},
         {Mode="Label",Title="Unlock Sea 3"},
         {Mode="Label",Title="Travel Sea 3"},
+        
     },
 }
 print("Adding Shop Items")
