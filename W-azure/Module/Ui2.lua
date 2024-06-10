@@ -129,7 +129,7 @@ local UiIntilize = {
         {Mode="Toggle",Title="Auto Ghoul",Description="Travel To Sea2 and Stack Farming Until Have Ghoul", Args = {"Get Ghoul","Enable"}},
         {Mode="Toggle",Title="Auto Soul Guitar",Args = {"Soul Guitar","Enable"}},
         {Mode="Toggle",Title="Auto Soul Guitar Material",Args = {"Material Soul Guitar","Enable"}},
-        {Mode="Toggle",Title="Auto CDK (DO NOT USE TESTING)",Args = {"CDK","Enable"}},
+        {Mode="Toggle",Title="Auto CDK",Args = {"CDK","Enable"}},
         
         --{Mode="Toggle",Title="Auto Collect Gift", Description="Sea 3 Function Event",Args = {"Winter Event","Enable"}}
     },
