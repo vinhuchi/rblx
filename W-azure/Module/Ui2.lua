@@ -149,6 +149,7 @@ local UiIntilize = {
         
         {Mode="Toggle",Title="Account To Upgrade Yoru V3",Description="Turn On This If This Is Account Want to Upgrade, do not if account to spawn Black Beard",Args = {"YoruV3","Upgrade"}},
         {Mode="Toggle",Title="Auto BlackSmith",Description="Self Explain",Args = {"BlackSmith","Enable"}},
+        {Mode="Toggle",Title="Auto Shark Anchor",Description="Self Explain",Args = {"Shark Anchor","Enable"}},
         {Mode="Toggle",Title="BlackSmith Sword/Gun Toggle",Description="Off = Sword, On = Gun",Args = {"BlackSmith","WeaponType"}},
         {Mode="Toggle",Title="Race Evolve Hop",Description="Turning On This Will Make Race Evolve Hopping For Faster Farming",Args = {"Race Evolve","Hop"}},
         {Mode="Toggle",Title="Auto Elite Hop",Description="",Args = {"Elite Hop","Enable"}},
