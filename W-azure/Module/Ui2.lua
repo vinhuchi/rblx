@@ -151,6 +151,7 @@ local UiIntilize = {
         {Mode="Toggle",Title="Auto BlackSmith",Description="Self Explain",Args = {"BlackSmith","Enable"}},
         {Mode="Toggle",Title="Auto Shark Anchor",Description="Self Explain",Args = {"Shark Anchor","Enable"}},
         {Mode="Toggle",Title="BlackSmith Sword/Gun Toggle",Description="Off = Sword, On = Gun",Args = {"BlackSmith","WeaponType"}},
+        {Mode="Toggle",Title="Rip Indra Hop",Description="Self Explain",Args = {"Rip Indra Hop","Enable"}},
         {Mode="Toggle",Title="Race Evolve Hop",Description="Turning On This Will Make Race Evolve Hopping For Faster Farming",Args = {"Race Evolve","Hop"}},
         {Mode="Toggle",Title="Auto Elite Hop",Description="",Args = {"Elite Hop","Enable"}},
         {Mode="Toggle",Title="Black Beard Hop",Description="Auto Hop For Black Beard",Args={"Black Beard Hop","Enable"}},
