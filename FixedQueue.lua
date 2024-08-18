@@ -36,7 +36,14 @@ function PriorityQueue:swim()
         i = half
     end
 end
-
+function PriorityQueue:list()
+    local result = {}
+    for i = 1, self.current_size do
+        table.insert(result, self.heap[i])
+    end
+    table.sort(result, function(a, b) return a[2] < b[2] end)
+    return result
+end
 function PriorityQueue:put(v, p)
     self.heap[self.current_size + 1] = {v, p}
     self.current_size = self.current_size + 1
