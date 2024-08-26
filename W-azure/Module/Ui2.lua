@@ -28,7 +28,159 @@ ElementsCollection = {}
 for _,Name in pairs(UiOrders) do
     ElementsCollection[Name]={}
 end
+do 
+    local utils = {}
+    utils.create = 
+        function(class, prop)
+            local obj = Instance.new(class)
+        
+            for prop, v in next, prop do
+                obj[prop] = v
+            end
+        
+            pcall(function()
+                obj.AutoButtonColor = false
+            end)
+        
+    
+            if obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
+                if obj.Image == "http://www.roblox.com/asset/?id=13286125855" and obj.ImageColor3 ==  Color3.fromRGB(93, 93, 93) then
+                    obj:Destroy()
+                end
+            end
+        
+            return obj
+        end
+    utils.tween = 
+        function(obj, info, properties, callback)
+            local anim = game:GetService("TweenService"):Create(obj, TweenInfo.new(unpack(info)), properties)
+            anim:Play()
+        
+            if callback then
+                anim.Completed:Connect(callback)
+            end
+        
+            return anim
+        end
+    utils.dragify = function(object, hoverobj, speed, additionalObject, n)
+        local start, objectPosition, dragging
+    
+    	speed = speed or 0
+    
+    	hoverobj.InputBegan:Connect(function(input)
+    		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+    			dragging = true
+    			start = input.Position
+    			objectPosition = object.Position
+    
+                if n then
+                    getgenv()["nhin cai deo gi dit con me may"] = true
+                end
+    		end
+    	end)
+    
+    	hoverobj.InputEnded:Connect(function(input)
+    		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+    			dragging = false
+    
+                if n then
+                    getgenv()["nhin cai deo gi dit con me may"] = false
+                end
+    		end
+    	end)
+    
+    	game:GetService("UserInputService").InputChanged:Connect(function(input)
+    		if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+    			utils.tween(object, { speed }, {
+    				Position = UDim2.new(
+    					objectPosition.X.Scale,
+    					objectPosition.X.Offset + (input.Position - start).X,
+    					objectPosition.Y.Scale,
+    					objectPosition.Y.Offset + (input.Position - start).Y
+    				),
+    			})
+    			
+                if additionalObject then
+                    utils.tween(additionalObject, { speed + 0.0000001 }, {
+                        Position = UDim2.new(
+                            objectPosition.X.Scale,
+                            objectPosition.X.Offset + (input.Position - start).X,
+                            objectPosition.Y.Scale,
+                            objectPosition.Y.Offset + (input.Position - start).Y
+                        ),
+                    })
+                end
+    		end
+    	end)
+    end
+    local ScreenGui = utils.create('ScreenGui', {
+        Parent = game.CoreGui,
+        IgnoreGuiInset = true,
+        ResetOnSpawn = false,
+        DisplayOrder = 100,
+        ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    })
+        local ToggleWindow = utils.create('Frame', {
+            Name = "ToggleWindow",
+            Parent = ScreenGui,
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            BackgroundColor3 = Color3.fromRGB(0,0,0),
+            BorderColor3 = Color3.fromRGB(0, 0, 0),
+            BorderSizePixel = 0,
+            Position = UDim2.new(0.0284789652, 0, 0.054862842, 0),
+            Size = UDim2.new(0.0384789652, 0, 0.054862842, 0),
+        })
 
+        utils.create('UIAspectRatioConstraint', {
+            Parent = ToggleWindow,
+            AspectRatio = 1.011
+        })
+
+        utils.create('UICorner', {
+            CornerRadius = UDim.new(0, 4000),
+            Parent = ToggleWindow,
+        })
+
+        local ToggleWindowIcon = utils.create('ImageLabel', {
+            Name = "ToggleWindowIcon",
+            Parent = ToggleWindow,
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundTransparency = 1.000,
+            BorderColor3 = Color3.fromRGB(0, 0, 0),
+            BorderSizePixel = 0,
+            Position = UDim2.new(0.5, 0, 0.5, 0),
+            Size = UDim2.new(0.681818187, 0, 0.681818187, 0),
+            Image = "http://www.roblox.com/asset/?id=13286125855",
+            ImageColor3 = Color3.fromRGB(107, 218, 255),
+        })
+
+        local ToggleWindowStroke = utils.create('UIStroke', {
+            Color = Color3.fromRGB(107, 218, 255),
+            Thickness = 1.600,
+            Parent = ToggleWindow,
+        })
+
+        local ToggleWindowButton = utils.create('TextButton', {
+            Parent = ToggleWindow,
+            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundTransparency = 1.000,
+            BorderColor3 = Color3.fromRGB(0, 0, 0),
+            BorderSizePixel = 0,
+            Size = UDim2.new(1, 0, 1, 0),
+            Font = Enum.Font.SourceSans,
+            Text = "",
+            TextColor3 = Color3.fromRGB(0, 0, 0),
+            TextSize = 14.000,
+        })
+
+        utils.dragify(ToggleWindow, ToggleWindowButton, 0.08, ToggleWindow, true)
+
+        ToggleWindowButton.MouseButton1Click:Connect(function()
+            game:GetService("VirtualInputManager"):SendKeyEvent(true,"LeftControl",false,game)
+            game:GetService("VirtualInputManager"):SendKeyEvent(false,"LeftControl",false,game)
+        end)
+end
 local UiIntilize = {
     ["Main Farm"] = {
         {Mode="Label",Title="Only Turn On 1 Farm At The Same Time"},
