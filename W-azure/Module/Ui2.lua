@@ -185,6 +185,7 @@ local UiIntilize = {
     ["Main Farm"] = {
         {Mode="Label",Title="Only Turn On 1 Farm At The Same Time"},
         {Mode="Toggle",Title="Auto Katakuri",Description="Turn On Auto Kill Cake Prince And Auto Kill Dough King By Default",Args={"Katakuri","Enable"}},
+        {Mode="Toggle",Title="Auto Farm Level",Description="",Args={"Level","Enable"}},
         {Mode="Toggle",Title="Auto Bone",Description="",Args={"Bone","Enable"}},
         {Mode="Toggle",Title="Accept Quest",Description="For Bone And Katakuri, Have A Chance of Getting Reseted(Noone  yet)",Args={"AcceptQuest_Bone_Katakuri","Enable"}},
         {Mode="Toggle",Title="Kill Aura",Description="Farm Near Lv Mob Or Near Position",Args={"Kill Aura","Enable"}},
