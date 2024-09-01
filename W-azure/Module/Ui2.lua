@@ -20,7 +20,7 @@ local UiOrders
 if getgenv().OneClickUi then
     UiOrders = {"Status","Setting","Game-Server","One Click","One Click Debugger"}
 else
-     UiOrders = {"Main Farm","Stack Auto farm","Sub Farming","Status","Player-Status","Fruit","Local Player","Travel","Pvp-Visual","Raid-Material","RaceV4-Mirage","Sea Events","Sub Class","Shop","Setting","Webhook","Game-Server","One Click","One Click Debugger"}
+     UiOrders = {"Main Farm","Stack Auto farm","Sub Farming","Status","Player-Status","Fruit","Local Player","Travel","Pvp-Visual","Raid-Material","RaceV4-Mirage","Sea Events","Sub Class","Shop","Setting","Webhook","Game-Server"}
 end
 local TabCollections = {
 }
