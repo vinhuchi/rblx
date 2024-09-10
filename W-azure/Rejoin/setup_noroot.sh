@@ -1,7 +1,7 @@
 GZ="https://github.com/vinhuchi/rblx/raw/main/W-azure/Rejoin/termux.dist.zip"
 DDIR="/storage/emulated/0/Download"
 TERMUXDIR="$DDIR/termux.dist"
-HOMEDIR="/data/data/com.termux/files/usr/termux.dist"
+HOMEDIR="/data/data/com.termux/files/home/termux.dist"
 ZIP_FILE="$DDIR/termux.dist.zip"
 
 if [ ! -d "$TERMUXDIR" ]; then
