@@ -1,9 +1,18 @@
 #!/bin/bash
 
-GZ="https://github.com/vinhuchi/rblx/raw/main/W-azure/Rejoin/termux.dist.zip"
+ARCH=$(dpkg --print-architecture)
+if [ "$ARCH" == "aarch64" ]; then
+  GZ="https://github.com/vinhuchi/rblx/raw/main/W-azure/Rejoin/aarch64/termux.dist.zip"
+elif [ "$ARCH" == "x86_64" ]; then
+  GZ="https://github.com/vinhuchi/rblx/raw/main/W-azure/Rejoin/x86_64/termux.dist.zip"
+else
+  echo "Unsupported architecture: $ARCH"
+  exit 1
+fi
+
 DDIR="/storage/emulated/0/Download"
 TERMUXDIR="$DDIR/termux.dist"
-HOMEDIR="/data/data/com.termux/files/usr/termux.dist"
+HOMEDIR="/data/data/com.termux/files/home/termux.dist"
 ZIP_FILE="$DDIR/termux.dist.zip"
 
 if [ ! -d "$TERMUXDIR" ]; then
@@ -11,7 +20,7 @@ if [ ! -d "$TERMUXDIR" ]; then
   unzip "$ZIP_FILE" -d "$DDIR"
   rm "$ZIP_FILE"
 else
-  echo "Exist"
+  echo "Directory already exists"
 fi
 
 su -c "cp -r $TERMUXDIR $HOMEDIR"
