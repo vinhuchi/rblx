@@ -615,14 +615,8 @@ local UiIntilize = {
         end},
         {Mode="Dropdown",Title="Insta Tp Place",Table=(function ()
             local Tbl = {}
-            for i,v in pairs(getgenv().IslandVariable.GatePos) do
-                table.insert(Tbl,i)
-            end
             return Tbl
         end)(),OnChange=function (state)
-            if type(state) == "string" and getgenv().IslandVariable.GatePos[state] then
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance",getgenv().IslandVariable.GatePos[state])
-            end
         end},
         {Mode="Dropdown",Title="Travel Place",Table=getgenv().IslandVariable.__Places,OnChange=function (state)
             getgenv().IslandVariable.SelectedPlace = state
