@@ -212,6 +212,8 @@ local UiIntilize = {
         {Mode="Toggle",Title="Sword Switcher",Description="Switch Sword When Have Enough Skills (Default) or Max Mastery",Args={"SwordSwitcher","Enable"}},
         {Mode="Toggle",Title="Only Switch Max Mastery",Description="Only Switch When Max Mastery",Args={"SwordSwitcher","MaxMastery"}},
         {Mode="Toggle",Title="Switch Sword When Low", Description = "Must Enable Use Sword", Args={"Mastery","Sword/Low"}},
+        {Mode="Toggle",Title="Gun Switcher",Description="Switch Gun When Have Enough Skills (Default) or Max Mastery",Args={"GunSwitcher","Enable"}},
+        {Mode="Toggle",Title="Only Switch Max Mastery",Description="Only Switch Gun When Max Mastery",Args={"GunSwitcher","MaxMastery"}},
         {Mode="Label",Title="Go To Setting To Select Skills"},
         {Mode="Toggle",Title="Mastery Farm",Description="Need Enable Auto Katakuri Or Bone", Args={"Mastery","Enable"}},
         {Mode="Toggle",Title ="Aimbot Camera " ,Description = "Aimbot for Mastery Using Camera", Args={"Mastery","Camera"}},
