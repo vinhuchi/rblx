@@ -417,6 +417,7 @@ local UiIntilize = {
         {Mode="Label",Title="Server Haki Color"},
         {Mode="Label",Title="Elite Status"},
         {Mode="Label",Title="Mirage Status"},
+        {Mode="Label",Title="PrehistoricIsland Status"},
         {Mode="Label",Title="Kitsune Status"},
         {Mode="Label",Title="FullMoon Status"},
     },
