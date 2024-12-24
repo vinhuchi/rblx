@@ -188,6 +188,8 @@ local UiIntilize = {
         {Mode="Toggle",Title="Auto Katakuri",Description="Turn On Auto Kill Cake Prince And Auto Kill Dough King By Default",Args={"Katakuri","Enable"}},
         
         {Mode="Toggle",Title="Auto Bone",Description="",Args={"Bone","Enable"}},
+        {Mode="Toggle",Title="Dualflintlock Farm",Description="",Args={"DualFlintLock_Farm","Enable"}},
+        
         {Mode="Toggle",Title="Accept Quest",Description="For Bone And Katakuri, Have A Chance of Getting Reseted(Noone  yet)",Args={"AcceptQuest_Bone_Katakuri","Enable"}},
         {Mode="Toggle",Title="Kill Aura",Description="Farm Near Lv Mob Or Near Position",Args={"Kill Aura","Enable"}},
         {Mode="Toggle",Title="Fully Auto Dough King",Description="",Args={"Full Dough King","Enable"}},
@@ -360,6 +362,51 @@ local UiIntilize = {
         {Mode="Toggle",Title="Citizen Quest Hop",Description="",Args = {"Citizen Quest","Hop"}},
         {Mode="Toggle",Title="Auto Get Rainbow Haki",Description="",Args = {"Rainbow Haki","Enable"}},
         {Mode="Toggle",Title="Rainbow Haki Hop",Description="Hopping For Fast Getting Rainbow Haki",Args = {"Rainbow Haki","Hop"}},
+    },
+    ["Vocalnic"] = {
+        {
+            Mode = "Toggle",
+            Title = "Auto Dojo Trainer",
+            Args = {"DojoQuest", "Enable"},
+            OnChange = function(state)
+                getgenv().Setting.DojoQuest.Enable = state
+            end
+        },
+        {
+            Mode = "Toggle",
+            Title = "Auto Ember (Dragon Hunter)",
+            Args = {"DragonHunterQuest", "Enable"},
+            OnChange = function(state)
+                getgenv().Setting.DragonHunterQuest.Enable = state
+            end
+        },
+        {
+            Mode = "Toggle",
+            Title = "Auto Collect Berry",
+            Args = {"CollectBerry", "Enable"},
+            OnChange = function(state)
+                getgenv().Setting.CollectBerry.Enable = state
+            end
+        },
+        {
+            Mode = "Toggle",
+            Title = "Auto Berry Hop",
+            Args = {"CollectBerry", "Hop"},
+            OnChange = function(state)
+                getgenv().Setting.CollectBerry.Hop = state
+            end
+        },
+        {
+            Mode = "Toggle",
+            Title = "Auto Find PrehistoricIsland",
+            Description = "PrehistoricIsland",
+            Args = {"SeaEvents", "AutoFindPrehistoricIsland"},
+            OnChange = function(state)
+                getgenv().Setting.SeaEvents.AutoFindPrehistoricIsland = state
+                SettingManager:Save()
+            end
+        },
+        
     },
     ["Status"] = {
         {Mode="Label",Title="Client Time"},
@@ -623,9 +670,19 @@ local UiIntilize = {
         {Mode="Dropdown",Title="Travel Place",Table=getgenv().IslandVariable.__Places,OnChange=function (state)
             getgenv().IslandVariable.SelectedPlace = state
         end},
+
         {Mode="Button",Title="Start Traveling",Callback=function ()
             IslandCaller("TweenSelectedPlace")
         end},
+
+        {Mode="Dropdown",Title="Tween to NPC",Table=getgenv().IslandVariable.__NPCs,OnChange=function (state)
+            getgenv().IslandVariable.SelectedNPC = state
+        end},
+        {Mode="Button",Title="Start Tweening",Callback=function ()
+            IslandCaller("TweenSelectedNPC")
+        end},
+
+        
     },
     ["Pvp-Visual"] = {
         {Mode="Dropdown",Title="Select Player",Table=IslandCaller("__StrGetPlayers"),OnChange=function (state)
@@ -1000,6 +1057,7 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
+
         {
             Mode = "Toggle",
             Title = "Auto Leviathan",
@@ -1501,15 +1559,6 @@ local UiIntilize = {
         },
         {
             Mode = "Toggle",
-            Title = "Stop Clicking",
-            Args = {"FastAttack", "StopClick"},
-            OnChange = function(state)
-                getgenv().Setting.FastAttack.StopClick = state
-                SettingManager:Save()
-            end
-        },
-        {
-            Mode = "Toggle",
             Title = "Fast Attack",
             Args = {"FastAttack", "Enable"},
             OnChange = function(state)
@@ -1517,26 +1566,7 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
-        {
-            Mode = "Toggle",
-            Title = "Very Fast Attack",
-            Description = " Dont Use, Just Change Fast Attack % Time to 100%",
-            Args = {"FastAttack", "SupremeAttack"},
-            OnChange = function(state)
-                getgenv().Setting.FastAttack.SupremeAttack = state
-                SettingManager:Save()
-            end
-        },
-       {
-            Mode = "Toggle",
-            Title = "Old Fast Attack",
-            Description = "Use Less For Now",
-            Args = {"FastAttack", "OldFastAttack"},
-            OnChange = function(state)
-                getgenv().Setting.FastAttack.OldFastAttack = state
-                SettingManager:Save()
-            end
-        },
+
         {
             Mode = "Toggle",
             Title = "On Player",
@@ -1557,43 +1587,10 @@ local UiIntilize = {
                 SettingManager:Save()
             end
         },
-        {
-            Mode = "Dropdown",
-            Title = "Fast Attack %Time",
-            Args = {"FastAttack", "TimeFastAttack"},
-            Table = {10,25,50,75,100},
-            Default = (function ()
-                local Default = {10,25,50,75,100}
-                local Found = 5
-                if not table.find(Default,getgenv().Setting.FastAttack.TimeFastAttack) then 
-                    getgenv().Setting.FastAttack.TimeFastAttack = 100
-                else
-                    Found = table.find(Default,getgenv().Setting.FastAttack.TimeFastAttack) 
-                end
-                return Found
-            end)(),
-            OnChange = function(value)
-                getgenv().Setting.FastAttack.TimeFastAttack = tonumber(value)
-                SettingManager:Save()
-            end
-        }, 
-        {
-            Mode = "Slider",
-            Title = "Attack Time",
-            Args = {"FastAttack", "TimeToAttack"},
-            Default = getgenv().Setting.FastAttack.TimeToAttack,
-            Min = 3,
-            Max = 10,
-            Rounding = 1,
-            OnChange = function(value)
-                getgenv().Setting.FastAttack.TimeToAttack = tonumber(value)
-                SettingManager:Save()
-            end
-        },
+
         {
             Mode = "Label",
             Title = "Mastery Position",
-            Args = {"FastAttack", "TimeToAttack"},
 
         },
         function ()
