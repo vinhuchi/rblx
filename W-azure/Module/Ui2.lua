@@ -4,7 +4,6 @@ local LP = game.Players.LocalPlayer
 local Title = "W-azure" .. (getgenv().Premium and " [Premium]" or "")
 local SubTitle = "True V2 discord.gg/w-azure"
 local Fluent = getgenv().Fluent
-print("Fluent",Fluent)
 local UiSetting = Fluent.Options
 local IslandCaller = IslandCaller or getgenv().IslandCaller
 local SettingManager = getgenv().SettingManager 
